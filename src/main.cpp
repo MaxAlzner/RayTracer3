@@ -9,8 +9,12 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+#define _getch getch
+
 #elif defined(_WIN32)
 
+#include <direct.h>
+#include <conio.h>
 
 #endif
 
@@ -21,7 +25,7 @@ std::string workingdir()
 #if defined(__linux__)
     return std::string(getenv("HOME")) + "/.raytracer";
 #elif defined(_WIN32)
-    return std::string(getenv("APPDATA")) + "\\.raytracer";
+    return std::string(getenv("APPDATA")) + "\\RayTracer";
 #else
     return std::string();
 #endif
@@ -38,7 +42,11 @@ void scan()
     DIR* directory = opendir(env.c_str());
     if (directory == 0)
     {
+#if defined(__linux__)
         mkdir(env.c_str(), S_IRUSR | S_IWUSR | S_IXUSR);
+#elif defined(_WIN32)
+		_mkdir(env.c_str());
+#endif
         directory = opendir(env.c_str());
     }
     
@@ -63,5 +71,6 @@ int main(int argc, char** argv)
     printf("started\n");
     scan();
     
+	_getch();
     return 0;
 }

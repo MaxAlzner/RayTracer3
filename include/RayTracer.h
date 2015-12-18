@@ -1,5 +1,7 @@
 #pragma once
 
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
@@ -7,6 +9,15 @@
 
 #include <inttypes.h>
 #include <float.h>
+
+#if defined(__linux__)
+
+
+#elif defined(_WIN32)
+
+#include <Windows.h>
+
+#endif
 
 #include <string>
 #include <vector>
@@ -17,14 +28,5 @@
 #include <glm/ext.hpp>
 
 #include <FreeImage.h>
-
-#if defined(__linux__)
-
-
-#elif defined(_WIN32)
-
-#include <Windows.h>
-
-#endif
 
 #include "RayTracer_typedef.h"

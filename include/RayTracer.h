@@ -27,6 +27,9 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
+#include <shape.h>
+
 #include <FreeImage.h>
 
 #include "RayTracer_typedef.h"
+#include "RayTracer_shape.h"

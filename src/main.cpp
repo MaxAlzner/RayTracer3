@@ -68,9 +68,11 @@ void scan()
 
 int main(int argc, char** argv)
 {
+	shape_init();
     printf("started\n");
     scan();
     
 	_getch();
+	shape_release();
     return 0;
 }

@@ -33,3 +33,11 @@
 
 #include "RayTracer_typedef.h"
 #include "RayTracer_shape.h"
+#include "RayTracer_trace.h"
+
+namespace ray
+{
+
+	typedef FIBITMAP IMAGETYPE;
+
+}

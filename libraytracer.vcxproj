@@ -135,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\RayTracer.h" />
+    <ClInclude Include="include\RayTracer_trace.h" />
     <ClInclude Include="include\RayTracer_shape.h" />
     <ClInclude Include="include\RayTracer_typedef.h" />
   </ItemGroup>

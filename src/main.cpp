@@ -68,11 +68,13 @@ void scan()
 
 int main(int argc, char** argv)
 {
+	FreeImage_Initialise();
 	shape_init();
     printf("started\n");
     scan();
     
 	_getch();
 	shape_release();
+	FreeImage_DeInitialise();
     return 0;
 }

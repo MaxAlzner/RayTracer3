@@ -8,6 +8,7 @@
 
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <curses.h>
 
 #define _getch getch
 

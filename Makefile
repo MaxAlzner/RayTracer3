@@ -9,8 +9,9 @@ INC = $(wildcard $(INCDIR)/*.*)
 SRC = $(wildcard $(SRCDIR)/*.*)
 OBJ = $(patsubst $(SRCDIR)/%.cpp, $(OBJDIR)/%.o, $(SRC))
 LIB = -lshape -lfreeimage
+LIB += -lncurses
 
-TARGET = $(BINDIR)/RayTracer
+TARGET = $(BINDIR)/raytracer
 
 $(TARGET): compile
 	@echo "Building"

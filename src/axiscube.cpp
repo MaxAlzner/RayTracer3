@@ -19,7 +19,7 @@ namespace ray
 		float t0 = txmin > tymin ? txmin : tymin;
 		float t1 = txmax < tymax ? txmax : tymax;
 		int facein = txmin > tymin ? ((a >= 0.0f) ? 0 : 3) : ((b >= 0.0f) ? 1 : 4);
-		int faceout = txmax < tymax ? ((a >= 0.0f) ? 3 : 0) : ((b >= 0.0f) ? 4 : 1);
+		// int faceout = txmax < tymax ? ((a >= 0.0f) ? 3 : 0) : ((b >= 0.0f) ? 4 : 1);
 		if (tzmin > t0)
 		{
 			t0 = tzmin;
@@ -29,7 +29,7 @@ namespace ray
 		if (tzmax < t1)
 		{
 			t1 = tzmax;
-			faceout = (c >= 0.0f) ? 5 : 2;
+			// faceout = (c >= 0.0f) ? 5 : 2;
 		}
 
 		float kEpsilon = 1.0f;

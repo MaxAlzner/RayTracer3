@@ -1,6 +1,7 @@
 #pragma once
 
 #define _CRT_SECURE_NO_WARNINGS
+#define GLM_FORCE_RADIANS
 
 #include <stdlib.h>
 #include <math.h>
@@ -31,13 +32,13 @@
 
 #include <FreeImage.h>
 
-#include "RayTracer_typedef.h"
-#include "RayTracer_shape.h"
-#include "RayTracer_trace.h"
-
 namespace ray
 {
 
 	typedef FIBITMAP IMAGETYPE;
 
 }
+
+#include "RayTracer_typedef.h"
+#include "RayTracer_shape.h"
+#include "RayTracer_trace.h"

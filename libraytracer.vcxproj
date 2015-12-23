@@ -128,15 +128,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\axiscube.cpp" />
-    <ClCompile Include="src\lumintype.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\raytype.cpp" />
+    <ClCompile Include="src\path.cpp" />
+    <ClCompile Include="src\photo.cpp" />
     <ClCompile Include="src\sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\RayTracer.h" />
-    <ClInclude Include="include\RayTracer_trace.h" />
+    <ClInclude Include="include\RayTracer_light.h" />
+    <ClInclude Include="include\RayTracer_material.h" />
     <ClInclude Include="include\RayTracer_shape.h" />
+    <ClInclude Include="include\RayTracer_trace.h" />
     <ClInclude Include="include\RayTracer_typedef.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

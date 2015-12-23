@@ -67,12 +67,24 @@ void scan()
     closedir(directory);
 }
 
+    
 int main(int argc, char** argv)
 {
 	FreeImage_Initialise();
 	shape_init();
     printf("started\n");
     scan();
+    
+    ray::photo_t photo(240, 160);
+    ray::tracestack_t stack;
+    stack._traceables.push_back(new ray::tracesphere_t(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), 4.0f));
+    ray::camera_t camera(shape_transformation(glm::vec3(0.0f, 0.0f, -4.0f), glm::vec3(1.0f), glm::vec3(0.0f)), glm::vec2(4.0f, 3.0f), 1.6f);
+    
+    photo.trace(stack, camera);
+    FIBITMAP* bitmap = photo.rasterize();
+    FreeImage_Save(FIF_PNG, bitmap, "test.png", 0);
+    
+    photo.release();
     
 	_getch();
 	shape_release();

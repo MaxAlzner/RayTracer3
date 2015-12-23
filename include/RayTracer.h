@@ -32,6 +32,15 @@
 
 #include <FreeImage.h>
 
+#if 0
+#if !defined(min)
+#define min(x, y) (x < y ? x : y)
+#endif
+#if !defined(max)
+#define max(x, y) (x > y ? x : y)
+#endif
+#endif
+
 namespace ray
 {
 
@@ -41,4 +50,6 @@ namespace ray
 
 #include "RayTracer_typedef.h"
 #include "RayTracer_shape.h"
+#include "RayTracer_material.h"
+#include "RayTracer_light.h"
 #include "RayTracer_trace.h"

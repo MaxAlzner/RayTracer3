@@ -25,24 +25,104 @@ namespace ray
 			_forward(forward) {}
 		inline ~ray_t() {}
 		
-		inline ray_t operator+() const;
-		inline ray_t operator-() const;
-		inline ray_t& operator+=(const ray_t& other);
-		inline ray_t& operator+=(const glm::vec4& v);
-		inline ray_t& operator+=(const glm::vec3& v);
-		inline ray_t& operator+=(const float v);
-		inline ray_t& operator-=(const ray_t& other);
-		inline ray_t& operator-=(const glm::vec4& v);
-		inline ray_t& operator-=(const glm::vec3& v);
-		inline ray_t& operator-=(const float v);
-		inline ray_t& operator*=(const ray_t& other);
-		inline ray_t& operator*=(const glm::vec4& v);
-		inline ray_t& operator*=(const glm::vec3& v);
-		inline ray_t& operator*=(const float v);
-		inline ray_t& operator/=(const ray_t& other);
-		inline ray_t& operator/=(const glm::vec4& v);
-		inline ray_t& operator/=(const glm::vec3& v);
-		inline ray_t& operator/=(const float v);
+		inline ray_t operator+() const
+		{
+			return ray_t(+this->_origin, +this->_forward);
+		}
+		inline ray_t operator-() const
+		{
+			return ray_t(-this->_origin, -this->_forward);
+		}
+		inline ray_t& operator+=(const ray_t& other)
+		{
+			this->_origin += other._origin;
+			this->_forward = glm::normalize(this->_forward + other._forward);
+			return *this;
+		}
+		inline ray_t& operator+=(const glm::vec4& v)
+		{
+			this->_origin += v;
+			return *this;
+		}
+		inline ray_t& operator+=(const glm::vec3& v)
+		{
+			this->_origin += glm::vec4(v, 0.0f);
+			return *this;
+		}
+		inline ray_t& operator+=(const float v)
+		{
+			this->_origin += v;
+			return *this;
+		}
+		inline ray_t& operator-=(const ray_t& other)
+		{
+			this->_origin -= other._origin;
+			this->_forward = glm::normalize(this->_forward - other._forward);
+			return *this;
+		}
+		inline ray_t& operator-=(const glm::vec4& v)
+		{
+			this->_origin -= v;
+			return *this;
+		}
+		inline ray_t& operator-=(const glm::vec3& v)
+		{
+			this->_origin -= glm::vec4(v, 1.0f);
+			return *this;
+		}
+		inline ray_t& operator-=(const float v)
+		{
+			this->_origin -= v;
+			return *this;
+		}
+		inline ray_t& operator*=(const ray_t& other)
+		{
+			this->_origin *= other._origin;
+			this->_forward = glm::normalize(this->_forward * other._forward);
+			return *this;
+		}
+		inline ray_t& operator*=(const glm::vec4& v)
+		{
+			this->_origin *= v;
+			this->_forward = glm::normalize(this->_forward * glm::vec3(v));
+			return *this;
+		}
+		inline ray_t& operator*=(const glm::vec3& v)
+		{
+			this->_origin *= glm::vec4(v, 1.0f);
+			this->_forward = glm::normalize(this->_forward * v);
+			return *this;
+		}
+		inline ray_t& operator*=(const float v)
+		{
+			this->_origin *= v;
+			this->_forward = glm::normalize(this->_forward * v);
+			return *this;
+		}
+		inline ray_t& operator/=(const ray_t& other)
+		{
+			this->_origin /= other._origin;
+			this->_forward = glm::normalize(this->_forward / other._forward);
+			return *this;
+		}
+		inline ray_t& operator/=(const glm::vec4& v)
+		{
+			this->_origin /= v;
+			this->_forward = glm::normalize(this->_forward / glm::vec3(v));
+			return *this;
+		}
+		inline ray_t& operator/=(const glm::vec3& v)
+		{
+			this->_origin /= glm::vec4(v, 1.0f);
+			this->_forward = glm::normalize(this->_forward / v);
+			return *this;
+		}
+		inline ray_t& operator/=(const float v)
+		{
+			this->_origin /= v;
+			this->_forward = glm::normalize(this->_forward / v);
+			return *this;
+		}
 		
 		/// <summary>
 		/// Origin vertex of the ray.
@@ -55,37 +135,121 @@ namespace ray
 		
 	};
 	
-	inline ray_t operator+(const ray_t& r0, const ray_t& r1);
-	inline ray_t operator+(const ray_t& r, const glm::vec4& v);
-	inline ray_t operator+(const glm::vec4& v, const ray_t& r);
-	inline ray_t operator+(const ray_t& r, const glm::vec3& v);
-	inline ray_t operator+(const glm::vec3& v, const ray_t& r);
-	inline ray_t operator+(const ray_t& r, const float v);
-	inline ray_t operator+(const float v, const ray_t& r);
+	inline ray_t operator+(const ray_t& r0, const ray_t& r1)
+	{
+		return ray_t(r0._origin + r1._origin, glm::normalize(r0._forward + r1._forward));
+	}
+	inline ray_t operator+(const ray_t& r, const glm::vec4& v)
+	{
+		return ray_t(r._origin + v, r._forward);
+	}
+	inline ray_t operator+(const glm::vec4& v, const ray_t& r)
+	{
+		return ray_t(v + r._origin, r._forward);
+	}
+	inline ray_t operator+(const ray_t& r, const glm::vec3& v)
+	{
+		return ray_t(r._origin + glm::vec4(v, 0.0f), r._forward);
+	}
+	inline ray_t operator+(const glm::vec3& v, const ray_t& r)
+	{
+		return ray_t(glm::vec4(v, 0.0f) + r._origin, r._forward);
+	}
+	inline ray_t operator+(const ray_t& r, const float v)
+	{
+		return ray_t(r._origin + v, r._forward);
+	}
+	inline ray_t operator+(const float v, const ray_t& r)
+	{
+		return ray_t(v + r._origin, r._forward);
+	}
 	
-	inline ray_t operator-(const ray_t& r0, const ray_t& r1);
-	inline ray_t operator-(const ray_t& r, const glm::vec4& v);
-	inline ray_t operator-(const glm::vec4& v, const ray_t& r);
-	inline ray_t operator-(const ray_t& r, const glm::vec3& v);
-	inline ray_t operator-(const glm::vec3& v, const ray_t& r);
-	inline ray_t operator-(const ray_t& r, const float v);
-	inline ray_t operator-(const float v, const ray_t& r);
+	inline ray_t operator-(const ray_t& r0, const ray_t& r1)
+	{
+		return ray_t(r0._origin - r1._origin, glm::normalize(r0._forward - r1._forward));
+	}
+	inline ray_t operator-(const ray_t& r, const glm::vec4& v)
+	{
+		return ray_t(r._origin - v, r._forward);
+	}
+	inline ray_t operator-(const glm::vec4& v, const ray_t& r)
+	{
+		return ray_t(v - r._origin, r._forward);
+	}
+	inline ray_t operator-(const ray_t& r, const glm::vec3& v)
+	{
+		return ray_t(r._origin - glm::vec4(v, 0.0f), r._forward);
+	}
+	inline ray_t operator-(const glm::vec3& v, const ray_t& r)
+	{
+		return ray_t(glm::vec4(v, 0.0f) - r._origin, r._forward);
+	}
+	inline ray_t operator-(const ray_t& r, const float v)
+	{
+		return ray_t(r._origin - v, r._forward);
+	}
+	inline ray_t operator-(const float v, const ray_t& r)
+	{
+		return ray_t(v - r._origin, r._forward);
+	}
 	
-	inline ray_t operator*(const ray_t& r0, const ray_t& r1);
-	inline ray_t operator*(const ray_t& r, const glm::vec4& v);
-	inline ray_t operator*(const glm::vec4& v, const ray_t& r);
-	inline ray_t operator*(const ray_t& r, const glm::vec3& v);
-	inline ray_t operator*(const glm::vec3& v, const ray_t& r);
-	inline ray_t operator*(const ray_t& r, const float v);
-	inline ray_t operator*(const float v, const ray_t& r);
+	inline ray_t operator*(const ray_t& r0, const ray_t& r1)
+	{
+		return ray_t(r0._origin * r1._origin, glm::normalize(r0._forward * r1._forward));
+	}
+	inline ray_t operator*(const ray_t& r, const glm::vec4& v)
+	{
+		return ray_t(r._origin * v, glm::normalize(r._forward * glm::vec3(v)));
+	}
+	inline ray_t operator*(const glm::vec4& v, const ray_t& r)
+	{
+		return ray_t(v * r._origin, glm::normalize(glm::vec3(v) * r._forward));
+	}
+	inline ray_t operator*(const ray_t& r, const glm::vec3& v)
+	{
+		return ray_t(r._origin * glm::vec4(v, 1.0f), glm::normalize(r._forward * v));
+	}
+	inline ray_t operator*(const glm::vec3& v, const ray_t& r)
+	{
+		return ray_t(glm::vec4(v, 1.0f) * r._origin, glm::normalize(v * r._forward));
+	}
+	inline ray_t operator*(const ray_t& r, const float v)
+	{
+		return ray_t(r._origin * v, glm::normalize(r._forward * v));
+	}
+	inline ray_t operator*(const float v, const ray_t& r)
+	{
+		return ray_t(v * r._origin, glm::normalize(v * r._forward));
+	}
 	
-	inline ray_t operator/(const ray_t& r0, const ray_t& r1);
-	inline ray_t operator/(const ray_t& r, const glm::vec4& v);
-	inline ray_t operator/(const glm::vec4& v, const ray_t& r);
-	inline ray_t operator/(const ray_t& r, const glm::vec3& v);
-	inline ray_t operator/(const glm::vec3& v, const ray_t& r);
-	inline ray_t operator/(const ray_t& r, const float v);
-	inline ray_t operator/(const float v, const ray_t& r);
+	inline ray_t operator/(const ray_t& r0, const ray_t& r1)
+	{
+		return ray_t(r0._origin / r1._origin, glm::normalize(r0._forward / r1._forward));
+	}
+	inline ray_t operator/(const ray_t& r, const glm::vec4& v)
+	{
+		return ray_t(r._origin / v, glm::normalize(r._forward / glm::vec3(v)));
+	}
+	inline ray_t operator/(const glm::vec4& v, const ray_t& r)
+	{
+		return ray_t(v / r._origin, glm::normalize(glm::vec3(v) / r._forward));
+	}
+	inline ray_t operator/(const ray_t& r, const glm::vec3& v)
+	{
+		return ray_t(r._origin / glm::vec4(v, 1.0f), glm::normalize(r._forward / v));
+	}
+	inline ray_t operator/(const glm::vec3& v, const ray_t& r)
+	{
+		return ray_t(glm::vec4(v, 1.0f) / r._origin, glm::normalize(v / r._forward));
+	}
+	inline ray_t operator/(const ray_t& r, const float v)
+	{
+		return ray_t(r._origin / v, glm::normalize(r._forward / v));
+	}
+	inline ray_t operator/(const float v, const ray_t& r)
+	{
+		return ray_t(v / r._origin, glm::normalize(v / r._forward));
+	}
 	
 	/// <summary>
 	/// Contains methods and properties for calculated lumination datatype.
@@ -112,22 +276,91 @@ namespace ray
 		/// Flattens the lumination colors into single color channel.
 		/// </summary>
 		/// <returns>4 dimensional vector representing a color (R, G, B, A).</returns>
-		inline glm::vec4 flatten() const;
+		inline glm::vec4 flatten() const
+		{
+			return this->_diffuse + ((glm::vec4(1.0f) - this->_diffuse) * this->_specular);
+		}
 		
-		inline lumination_t operator+() const;
-		inline lumination_t operator-() const;
-		inline lumination_t& operator+=(const lumination_t& other);
-		inline lumination_t& operator+=(const glm::vec4& v);
-		inline lumination_t& operator+=(const float v);
-		inline lumination_t& operator-=(const lumination_t& other);
-		inline lumination_t& operator-=(const glm::vec4& v);
-		inline lumination_t& operator-=(const float v);
-		inline lumination_t& operator*=(const lumination_t& other);
-		inline lumination_t& operator*=(const glm::vec4& v);
-		inline lumination_t& operator*=(const float v);
-		inline lumination_t& operator/=(const lumination_t& other);
-		inline lumination_t& operator/=(const glm::vec4& v);
-		inline lumination_t& operator/=(const float v);
+		inline lumination_t operator+() const
+		{
+			return lumination_t(+this->_diffuse, +this->_specular);
+		}
+		inline lumination_t operator-() const
+		{
+			return lumination_t(-this->_diffuse, -this->_specular);
+		}
+		inline lumination_t& operator+=(const lumination_t& other)
+		{
+			this->_diffuse += other._diffuse;
+			this->_specular += other._specular;
+			return *this;
+		}
+		inline lumination_t& operator+=(const glm::vec4& v)
+		{
+			this->_diffuse += v;
+			this->_specular += v;
+			return *this;
+		}
+		inline lumination_t& operator+=(const float v)
+		{
+			this->_diffuse += v;
+			this->_specular += v;
+			return *this;
+		}
+		inline lumination_t& operator-=(const lumination_t& other)
+		{
+			this->_diffuse -= other._diffuse;
+			this->_specular -= other._specular;
+			return *this;
+		}
+		inline lumination_t& operator-=(const glm::vec4& v)
+		{
+			this->_diffuse -= v;
+			this->_specular -= v;
+			return *this;
+		}
+		inline lumination_t& operator-=(const float v)
+		{
+			this->_diffuse -= v;
+			this->_specular -= v;
+			return *this;
+		}
+		inline lumination_t& operator*=(const lumination_t& other)
+		{
+			this->_diffuse *= other._diffuse;
+			this->_specular *= other._specular;
+			return *this;
+		}
+		inline lumination_t& operator*=(const glm::vec4& v)
+		{
+			this->_diffuse *= v;
+			this->_specular *= v;
+			return *this;
+		}
+		inline lumination_t& operator*=(const float v)
+		{
+			this->_diffuse *= v;
+			this->_specular *= v;
+			return *this;
+		}
+		inline lumination_t& operator/=(const lumination_t& other)
+		{
+			this->_diffuse /= other._diffuse;
+			this->_specular /= other._specular;
+			return *this;
+		}
+		inline lumination_t& operator/=(const glm::vec4& v)
+		{
+			this->_diffuse /= v;
+			this->_specular /= v;
+			return *this;
+		}
+		inline lumination_t& operator/=(const float v)
+		{
+			this->_diffuse /= v;
+			this->_specular /= v;
+			return *this;
+		}
 		
 		/// <summary>
 		/// Diffuse base color.
@@ -140,29 +373,89 @@ namespace ray
 		
 	};
 	
-	inline lumination_t operator+(const lumination_t& l0, const lumination_t& l1);
-	inline lumination_t operator+(const lumination_t& l, const glm::vec4& v);
-	inline lumination_t operator+(const glm::vec4& v, const lumination_t& l);
-	inline lumination_t operator+(const lumination_t& l, const float v);
-	inline lumination_t operator+(const float v, const lumination_t& l);
+	inline lumination_t operator+(const lumination_t& l0, const lumination_t& l1)
+	{
+	    return lumination_t(l0._diffuse + l1._diffuse, l0._specular + l1._specular);
+	}
+	inline lumination_t operator+(const lumination_t& l, const glm::vec4& v)
+	{
+	    return lumination_t(l._diffuse + v, l._specular + v);
+	}
+	inline lumination_t operator+(const glm::vec4& v, const lumination_t& l)
+	{
+	    return lumination_t(v + l._diffuse, v + l._specular);
+	}
+	inline lumination_t operator+(const lumination_t& l, const float v)
+	{
+	    return lumination_t(l._diffuse + v, l._specular + v);
+	}
+	inline lumination_t operator+(const float v, const lumination_t& l)
+	{
+	    return lumination_t(v + l._diffuse, v + l._specular);
+	}
 	
-	inline lumination_t operator-(const lumination_t& l0, const lumination_t& l1);
-	inline lumination_t operator-(const lumination_t& l, const glm::vec4& v);
-	inline lumination_t operator-(const glm::vec4& v, const lumination_t& l);
-	inline lumination_t operator-(const lumination_t& l, const float v);
-	inline lumination_t operator-(const float v, const lumination_t& l);
+	inline lumination_t operator-(const lumination_t& l0, const lumination_t& l1)
+	{
+	    return lumination_t(l0._diffuse - l1._diffuse, l0._specular - l1._specular);
+	}
+	inline lumination_t operator-(const lumination_t& l, const glm::vec4& v)
+	{
+	    return lumination_t(l._diffuse - v, l._specular - v);
+	}
+	inline lumination_t operator-(const glm::vec4& v, const lumination_t& l)
+	{
+	    return lumination_t(v - l._diffuse, v - l._specular);
+	}
+	inline lumination_t operator-(const lumination_t& l, const float v)
+	{
+	    return lumination_t(l._diffuse - v, l._specular - v);
+	}
+	inline lumination_t operator-(const float v, const lumination_t& l)
+	{
+	    return lumination_t(v - l._diffuse, v - l._specular);
+	}
 	
-	inline lumination_t operator*(const lumination_t& l0, const lumination_t& l1);
-	inline lumination_t operator*(const lumination_t& l, const glm::vec4& v);
-	inline lumination_t operator*(const glm::vec4& v, const lumination_t& l);
-	inline lumination_t operator*(const lumination_t& l, const float v);
-	inline lumination_t operator*(const float v, const lumination_t& l);
+	inline lumination_t operator*(const lumination_t& l0, const lumination_t& l1)
+	{
+	    return lumination_t(l0._diffuse * l1._diffuse, l0._specular * l1._specular);
+	}
+	inline lumination_t operator*(const lumination_t& l, const glm::vec4& v)
+	{
+	    return lumination_t(l._diffuse * v, l._specular * v);
+	}
+	inline lumination_t operator*(const glm::vec4& v, const lumination_t& l)
+	{
+	    return lumination_t(v * l._diffuse, v * l._specular);
+	}
+	inline lumination_t operator*(const lumination_t& l, const float v)
+	{
+	    return lumination_t(l._diffuse * v, l._specular * v);
+	}
+	inline lumination_t operator*(const float v, const lumination_t& l)
+	{
+	    return lumination_t(v * l._diffuse, v * l._specular);
+	}
 	
-	inline lumination_t operator/(const lumination_t& l0, const lumination_t& l1);
-	inline lumination_t operator/(const lumination_t& l, const glm::vec4& v);
-	inline lumination_t operator/(const glm::vec4& v, const lumination_t& l);
-	inline lumination_t operator/(const lumination_t& l, const float v);
-	inline lumination_t operator/(const float v, const lumination_t& l);
+	inline lumination_t operator/(const lumination_t& l0, const lumination_t& l1)
+	{
+	    return lumination_t(l0._diffuse / l1._diffuse, l0._specular / l1._specular);
+	}
+	inline lumination_t operator/(const lumination_t& l, const glm::vec4& v)
+	{
+	    return lumination_t(l._diffuse / v, l._specular / v);
+	}
+	inline lumination_t operator/(const glm::vec4& v, const lumination_t& l)
+	{
+	    return lumination_t(v / l._diffuse, v / l._specular);
+	}
+	inline lumination_t operator/(const lumination_t& l, const float v)
+	{
+	    return lumination_t(l._diffuse / v, l._specular / v);
+	}
+	inline lumination_t operator/(const float v, const lumination_t& l)
+	{
+	    return lumination_t(v / l._diffuse, v / l._specular);
+	}
 	
 	/// <summary>
 	/// Contains methods and properties for the result of a ray hitting a shape.
@@ -240,7 +533,7 @@ namespace ray
 	};
 	
 	/// <summary>
-	/// Contains methods and properties for the calculated lighting data for a point in space.
+	/// Contains methods and properties for the calculated surface data for a point in space.
 	/// </summary>
 	struct fragment_t
 	{
@@ -330,6 +623,46 @@ namespace ray
 		/// Emissive color at the position.
 		/// </summary>
 		glm::vec4 _emissive;
+		
+	};
+	
+	/// <summary>
+	/// Contains methods and properties for the calculated lighting data used for shading a surface fragment.
+	/// </summary>
+	struct lighting_t
+	{
+		
+		inline lighting_t() :
+			_direction(0.0f, 0.0f, 1.0f),
+			_color(1.0f),
+			_attenuation(0.0f) {}
+		/// <param name="position">3 dimensional vector representing the position of the light.</param>
+		/// <param name="attenuation">Attenuation power of the light, must be zero to one value.</param>
+		inline lighting_t(const glm::vec3& direction, const float attenuation) :
+			_direction(direction),
+			_color(1.0f),
+			_attenuation(std::min(std::max(attenuation, 0.0f), 1.0f)) {}
+		/// <param name="position">3 dimensional vector representing the position of the light.</param>
+		/// <param name="color">4 dimensional vector representing the color of the light.</param>
+		/// <param name="attenuation">Attenuation power of the light, must be zero to one value.</param>
+		inline lighting_t(const glm::vec3& direction, const glm::vec4& color, const float attenuation) :
+			_direction(direction),
+			_color(color),
+			_attenuation(std::min(std::max(attenuation, 0.0f), 1.0f)) {}
+		inline ~lighting_t() {}
+		
+		/// <summary>
+		/// Direction of the lighting.
+		/// </summary>
+		glm::vec3 _direction;
+		/// <summary>
+		/// Color of the lighting.
+		/// </summary>
+		glm::vec4 _color;
+		/// <summary>
+		/// Attenuation power of the lighting must be zero to one.
+		/// </summary>
+		float _attenuation;
 		
 	};
 	

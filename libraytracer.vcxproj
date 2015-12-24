@@ -132,6 +132,7 @@
     <ClCompile Include="src\path.cpp" />
     <ClCompile Include="src\photo.cpp" />
     <ClCompile Include="src\sphere.cpp" />
+    <ClCompile Include="src\texturefilter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\RayTracer.h" />

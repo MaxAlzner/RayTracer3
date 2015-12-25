@@ -45,6 +45,23 @@ namespace ray
 {
 
 	typedef FIBITMAP IMAGETYPE;
+	
+	struct ray_t;
+	struct lumination_t;
+	struct rayhit_t;
+	struct fragment_t;
+	struct lighting_t;
+	
+	struct traceable_t;
+	
+	class texturefilter_t;
+	class material_t;
+	class light_t;
+	
+	class camera_t;
+	class tracestack_t;
+	class tracepath_t;
+	class photo_t;
 
 }
 

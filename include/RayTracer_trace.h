@@ -98,10 +98,12 @@ namespace ray
 	public:
 
 		inline tracepath_t() :
+			_stack(0),
 			_reflection(0),
 			_passthrough(0) {}
-		inline tracepath_t(const fragment_t& frag, tracepath_t* reflection = 0, tracepath_t* passthrough = 0) :
+		inline tracepath_t(const fragment_t& frag, const tracestack_t& stack, tracepath_t* reflection = 0, tracepath_t* passthrough = 0) :
 			_fragment(frag),
+			_stack((tracestack_t*)&stack),
 			_reflection(reflection),
 			_passthrough(passthrough) {}
 		inline ~tracepath_t() { this->clear(); }
@@ -133,6 +135,10 @@ namespace ray
 		/// Path segment's surface fragment that has been hit by a ray.
 		/// </summary>
 		fragment_t _fragment;
+		/// <summary>
+		/// Stack of objects that are involved in the traced scene.
+		/// </summary>
+		tracestack_t* _stack;
 		/// <summary>
 		/// Path segment's next link that has been reflected off of this segment's fragment.
 		/// </summary>

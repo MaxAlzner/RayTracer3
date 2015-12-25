@@ -464,13 +464,12 @@ namespace ray
 	{
 		
 		inline rayhit_t() :
-			_distance(FLT_MAX),
+			_distance(-1.0f),
 			_intersection(0.0f, 0.0f, 0.0f, 1.0),
 			_texcoord(0.0f),
 			_normal(0.0f, 0.0f, 1.0f),
 			_tangent(1.0f, 0.0f, 0.0f),
-			_binormal(0.0f, 1.0f, 0.0f)/*,
-			_surface(0)*/ {}
+			_binormal(0.0f, 1.0f, 0.0f) {}
 		/// <param name="ray">Ray that caused the hit.</param>
 		/// <param name="distance">Distance from the ray origin to the intersection.</param>
 		/// <param name="intersection">Intersection point where the hit occured.</param>
@@ -478,7 +477,6 @@ namespace ray
 		/// <param name="normal">Surface normal on the shape where the hit occured.</param>
 		/// <param name="tangent">Surface tangent on the shape where the hit occured.</param>
 		/// <param name="binormal">Surface binormal on the shape where the hit occured.</param>
-		/// <param name="surface">Pointer to the surface shape.</param>
 		inline rayhit_t(
 			const ray_t& ray,
 			const float distance,
@@ -486,16 +484,19 @@ namespace ray
 			const glm::vec2& texcoord,
 			const glm::vec3& normal,
 			const glm::vec3& tangent,
-			const glm::vec3& binormal/*,
-			void const * surface*/) :
+			const glm::vec3& binormal) :
 			_ray(ray),
 			_distance(distance),
 			_texcoord(texcoord),
 			_normal(normal),
 			_tangent(tangent),
-			_binormal(binormal)/*,
-			_surface(surface)*/ {}
+			_binormal(binormal) {}
 		inline ~rayhit_t() {}
+		
+		/// <summary>
+		/// Gets a value indicating whether or not the hit is empty.
+		/// </summary>
+		inline bool empty() const { return this->_distance < 0.0f; }
 		
 		/// <summary>
 		/// Ray that caused the hit.
@@ -525,10 +526,6 @@ namespace ray
 		/// Surface binormal on the shape where the hit occured.
 		/// </summary>
 		glm::vec3 _binormal;
-		/// <summary>
-		/// Pointer to the surface shape.
-		/// </summary>
-		// void* _surface;
 		
 	};
 	
@@ -539,7 +536,7 @@ namespace ray
 	{
 		
 		inline fragment_t() :
-			// _material(0),
+			_material(0),
 			_position(0.0f),
 			_texcoord(0.0f),
 			_space(1.0f),
@@ -549,23 +546,23 @@ namespace ray
 			_view(0.0f, 0.0f, 1.0f),
 			_transparency(0.0f),
 			_reflectivity(1.0f),
-			_color(1.0f),
-			_specular(1.0f),
+			_color(1.0f, 0.0f, 1.0f, 1.0f),
+			_specular(0.0f),
 			_emissive(0.0f) {}
-		// inline fragment_t(const rayhit_t& hit, void& material) :
-		// 	_material(&material),
-		// 	_position(hit.intersection),
-		// 	_texcoord(hit.texcoord),
-		// 	_space(hit.tangent, hit.binormal, hit.normal),
-		// 	_normal(glm::normalize(this->_space * this->_material->surfaceNormal(this->_texcoord))),
-		// 	_tangent(glm::cross(-hit.binormal, this->_normal)),
+		// inline fragment_t(const rayhit_t& hit, const material_t& material) :
+		// 	_material((material_t*)&material),
+		// 	_position(hit._intersection),
+		// 	_texcoord(hit._texcoord),
+		// 	_space(hit._tangent, hit._binormal, hit._normal),
+		// 	_normal(glm::normalize(this->_space * this->_material->normal(this->_texcoord))),
+		// 	_tangent(glm::cross(-hit._binormal, this->_normal)),
 		// 	_binormal(glm::cross(this->_tangent, this->_normal)),
-		// 	_view(-hit.ray.direction),
-		// 	_transparency(this->_material->surfaceTransparency(this->_texcoord)),
-		// 	_reflectivity(this->_material->surfaceReflectivity(this->_texcoord)),
-		// 	_color(this->_material->surfaceColor(this->_texcoord)),
-		// 	_specular(this->_material->surfaceSpecular(this->_texcoord)),
-		// 	_emissive(this->_material->surfaceEmissive(this->_texcoord)) {}
+		// 	_view(-hit._ray._direction),
+		// 	_transparency(this->_material->transparency(this->_texcoord)),
+		// 	_reflectivity(this->_material->reflectivity(this->_texcoord)),
+		// 	_color(this->_material->color(this->_texcoord)),
+		// 	_specular(this->_material->specular(this->_texcoord)),
+		// 	_emissive(this->_material->emissive(this->_texcoord)) {}
 		inline ~fragment_t() {}
 		
 		/// <summary>
@@ -574,7 +571,10 @@ namespace ray
 		/// <returns>Transformed ray that has been reflected.</returns>
 		inline ray_t reflect(const ray_t& ray) { return ray_t(this->_position, glm::reflect(-ray._forward, this->_normal)); }
 		
-		// void const * _material;
+		/// <summary>
+		/// Surface's material.
+		/// </summary>
+		material_t const * _material;
 		/// <summary>
 		/// Surface position of the fragment.
 		/// </summary>
@@ -588,7 +588,7 @@ namespace ray
 		/// </summary>
 		glm::mat3 _space;
 		/// <summary>
-		/// Surface normal at he position.
+		/// Surface normal at the position.
 		/// </summary>
 		glm::vec3 _normal;
 		/// <summary>

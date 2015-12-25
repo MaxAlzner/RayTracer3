@@ -21,7 +21,20 @@ namespace ray
 	
 	lumination_t tracepath_t::albedo() const
 	{
-		return lumination_t(1.0f, 1.0f);
+		lumination_t albedo(0.0f, 0.0f);
+		if (this->_stack != 0)
+		{
+			for (std::list<light_t*>::iterator i = this->_stack->_lights.begin(); i != this->_stack->_lights.end(); i++)
+			{
+				light_t* light = *i;
+				if (light != 0)
+				{
+					albedo += light->luminance(this->_fragment);
+				}
+			}
+		}
+		
+		return albedo;
 	}
 
 	const fragment_t tracepath_t::fragment() const

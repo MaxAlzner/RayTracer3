@@ -41,7 +41,13 @@ namespace ray
 	
 	void photo_t::trace(const tracestack_t& stack, const camera_t& camera)
 	{
-		// throw "not implemented";
+		for (size_t i = 0; i < this->_width; i++)
+		{
+			for (size_t k = 0; k < this->_height; k++)
+			{
+				// tracepath_t* path = &(this->operator[](glm::ivec2(k, i)));
+			}
+		}
 	}
 
 	IMAGETYPE* photo_t::rasterize() const

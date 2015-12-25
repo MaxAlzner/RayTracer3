@@ -19,6 +19,9 @@
 
 #endif
 
+using namespace ray;
+using namespace glm;
+
 static std::map<std::string, std::string> preferences;
 
 std::string workingdir()
@@ -75,10 +78,11 @@ int main(int argc, char** argv)
     printf("started\n");
     scan();
     
-    ray::photo_t photo(240, 160);
-    ray::tracestack_t stack;
-    stack._traceables.push_back(new ray::tracesphere_t(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), 4.0f));
-    ray::camera_t camera(shape_transformation(glm::vec3(0.0f, 0.0f, -4.0f), glm::vec3(1.0f), glm::vec3(0.0f)), glm::vec2(4.0f, 3.0f), 1.6f);
+    photo_t photo(240, 160);
+    tracestack_t stack;
+    stack._traceables.push_back(new tracesphere_t(vec4(0.0f, 0.0f, 0.0f, 1.0f), 4.0f));
+    stack._lights.push_back(new pointlight_t(vec4(0.4f, 4.0f, 0.0f, 1.0f), vec4(1.0f), 1.0f));
+    camera_t camera(shape_transformation(glm::vec3(0.0f, 0.0f, -4.0f), vec3(1.0f), vec3(0.0f)), vec2(4.0f, 3.0f), 1.6f);
     
     photo.trace(stack, camera);
     FIBITMAP* bitmap = photo.rasterize();

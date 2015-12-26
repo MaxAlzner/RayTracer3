@@ -198,3 +198,4 @@ FakesAssemblies/
 *.VC.opendb
 
 deps/
+test.png

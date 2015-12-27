@@ -29,21 +29,14 @@ namespace ray
 		/// </summary>
 		/// <param name="coord">2 dimensional vector representing a point of the viewport.</param>
 		/// <returns>Ray going out from the focal point at the specified point on the viewport.</returns>
-		inline ray_t cast(const glm::vec2& coord)
-		{
-			return this->cast(coord.x, coord.y);
-		}
+		ray_t cast(const glm::vec2& coord) const;
 		/// <summary>
 		/// Calculates a ray from the camera's viewport.
 		/// </summary>
 		/// <param name="u">Point on the viewport's x-axis.</param>
 		/// <param name="v">Point on the viewport's y-axis.</param>
 		/// <returns>Ray going out from the focal point at the specified point on the viewport.</returns>
-		inline ray_t cast(const float u, const float v)
-		{
-			glm::vec3 origin = this->_p0 + (this->_u * u) + (this->_v * v);
-			return ray_t(origin, glm::normalize(origin - this->_focal));
-		}
+		ray_t cast(const float u, const float v) const;
 		
 	protected:
 		

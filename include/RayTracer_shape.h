@@ -8,14 +8,30 @@ namespace ray
 	/// </summary>
 	struct traceable_t
 	{
-
+		
+		inline traceable_t() :
+			_material(0) {}
+		inline ~traceable_t() {}
+		
 		/// <summary>
 		/// Calculates whether or not the the shape is intersected by the given ray.
 		/// </summary>
 		/// <param name="ray">A ray to intersect with the shape.</param>
 		/// <param name="hit">Pointer to a rayhit, if the ray does intersect with the object the calculated rayhit will be outputted here.</param>
-		virtual bool hitbyray(const ray_t& ray, rayhit_t* hit) = 0;
-
+		virtual bool hitbyray(const ray_t& ray, rayhit_t* hit) const = 0;
+		
+		/// <summary>
+		/// Gets the surface fragment for the given ray hit.
+		/// </summary>
+		/// <param name="hit">Ray hit that has hit this shape.</param>
+		/// <returns>Surface fragment of the shape.</returns>
+		virtual fragment_t fragmentate(const rayhit_t& hit) const = 0;
+		
+		/// <summary>
+		/// Material that is attached to the shape.
+		/// </summary>
+		material_t* _material;
+		
 	};
 
 	/// <summary>
@@ -40,8 +56,15 @@ namespace ray
 		/// </summary>
 		/// <param name="ray">A ray to intersect with the shape.</param>
 		/// <param name="hit">Pointer to a rayhit, if the ray does intersect with the object the calculated rayhit will be outputted here.</param>
-		bool hitbyray(const ray_t& ray, rayhit_t* hit);
-
+		bool hitbyray(const ray_t& ray, rayhit_t* hit) const;
+		
+		/// <summary>
+		/// Gets the surface fragment for the given ray hit.
+		/// </summary>
+		/// <param name="hit">Ray hit that has hit this shape.</param>
+		/// <returns>Surface fragment of the shape.</returns>
+		fragment_t fragmentate(const rayhit_t& hit) const;
+		
 	protected:
 
 		/// <summary>
@@ -83,8 +106,15 @@ namespace ray
 		/// </summary>
 		/// <param name="ray">A ray to intersect with the shape.</param>
 		/// <param name="hit">Pointer to a rayhit, if the ray does intersect with the object the calculated rayhit will be outputted here.</param>
-		bool hitbyray(const ray_t& ray, rayhit_t* hit);
-
+		bool hitbyray(const ray_t& ray, rayhit_t* hit) const;
+		
+		/// <summary>
+		/// Gets the surface fragment for the given ray hit.
+		/// </summary>
+		/// <param name="hit">Ray hit that has hit this shape.</param>
+		/// <returns>Surface fragment of the shape.</returns>
+		fragment_t fragmentate(const rayhit_t& hit) const;
+		
 	protected:
 
 		/// <summary>

@@ -16,7 +16,10 @@
 
 #elif defined(_WIN32)
 
+#define NOMINMAX
 #include <Windows.h>
+
+#include <algorithm>
 
 #endif
 
@@ -59,14 +62,14 @@ namespace ray
 	class light_t;
 	
 	class camera_t;
-	class tracestack_t;
+	struct tracestack_t;
 	class tracepath_t;
 	class photo_t;
 
 }
 
 #include "RayTracer_typedef.h"
-#include "RayTracer_shape.h"
 #include "RayTracer_material.h"
+#include "RayTracer_shape.h"
 #include "RayTracer_light.h"
 #include "RayTracer_trace.h"

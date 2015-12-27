@@ -465,11 +465,7 @@ namespace ray
 		
 		inline rayhit_t() :
 			_distance(-1.0f),
-			_intersection(0.0f, 0.0f, 0.0f, 1.0),
-			_texcoord(0.0f),
-			_normal(0.0f, 0.0f, 1.0f),
-			_tangent(1.0f, 0.0f, 0.0f),
-			_binormal(0.0f, 1.0f, 0.0f) {}
+			_intersection(0.0f, 0.0f, 0.0f, 1.0) {}
 		/// <param name="ray">Ray that caused the hit.</param>
 		/// <param name="distance">Distance from the ray origin to the intersection.</param>
 		/// <param name="intersection">Intersection point where the hit occured.</param>
@@ -480,17 +476,10 @@ namespace ray
 		inline rayhit_t(
 			const ray_t& ray,
 			const float distance,
-			const glm::vec4& intersection,
-			const glm::vec2& texcoord,
-			const glm::vec3& normal,
-			const glm::vec3& tangent,
-			const glm::vec3& binormal) :
+			const glm::vec4& intersection) :
 			_ray(ray),
 			_distance(distance),
-			_texcoord(texcoord),
-			_normal(normal),
-			_tangent(tangent),
-			_binormal(binormal) {}
+			_intersection(intersection) {}
 		inline ~rayhit_t() {}
 		
 		/// <summary>
@@ -510,22 +499,6 @@ namespace ray
 		/// Intersection point where the hit occured.
 		/// </summary>
 		glm::vec4 _intersection;
-		/// <summary>
-		/// Texture coordinate on the shape where the hit occured.
-		/// </summary>
-		glm::vec2 _texcoord;
-		/// <summary>
-		/// Surface normal on the shape where the hit occured.
-		/// </summary>
-		glm::vec3 _normal;
-		/// <summary>
-		/// Surface tangent on the shape where the hit occured.
-		/// </summary>
-		glm::vec3 _tangent;
-		/// <summary>
-		/// Surface binormal on the shape where the hit occured.
-		/// </summary>
-		glm::vec3 _binormal;
 		
 	};
 	
@@ -549,20 +522,44 @@ namespace ray
 			_color(1.0f, 0.0f, 1.0f, 1.0f),
 			_specular(0.0f),
 			_emissive(0.0f) {}
-		// inline fragment_t(const rayhit_t& hit, const material_t& material) :
-		// 	_material((material_t*)&material),
-		// 	_position(hit._intersection),
-		// 	_texcoord(hit._texcoord),
-		// 	_space(hit._tangent, hit._binormal, hit._normal),
-		// 	_normal(glm::normalize(this->_space * this->_material->normal(this->_texcoord))),
-		// 	_tangent(glm::cross(-hit._binormal, this->_normal)),
-		// 	_binormal(glm::cross(this->_tangent, this->_normal)),
-		// 	_view(-hit._ray._direction),
-		// 	_transparency(this->_material->transparency(this->_texcoord)),
-		// 	_reflectivity(this->_material->reflectivity(this->_texcoord)),
-		// 	_color(this->_material->color(this->_texcoord)),
-		// 	_specular(this->_material->specular(this->_texcoord)),
-		// 	_emissive(this->_material->emissive(this->_texcoord)) {}
+		/// <param name="material">Surface's material.</param>
+		/// <param name="position">Position of the surface fragment.</param>
+		/// <param name="texcoord">Texture coordinate of the surface fragment.</param>
+		/// <param name="normal">Surface normal of the fragment.</param>
+		/// <param name="tangent">Surface tangent of the fragment.</param>
+		/// <param name="binormal">Surface binormal of the fragment.</param>
+		/// <param name="view">View direction of the surface fragment.</param>
+		/// <param name="transparency">Transparency value of the surface fragment.</param>
+		/// <param name="reflectivity">Reflectivity value of the surface fragment.</param>
+		/// <param name="color">Base color of the surface fragment.</param>
+		/// <param name="specular">Specular color of the surface fragment.</param>
+		/// <param name="emissive">Emissive color of the surface fragment.</param>
+		inline fragment_t(
+			material_t* material,
+			const glm::vec4& position,
+			const glm::vec2& texcoord,
+			const glm::vec3& normal,
+			const glm::vec3& tangent,
+			const glm::vec3& binormal,
+			const glm::vec3& view,
+			const float transparency,
+			const float reflectivity,
+			const glm::vec4& color,
+			const glm::vec4& specular,
+			const glm::vec4& emissive) :
+			_material(material),
+			_position(position),
+			_texcoord(texcoord),
+			_space(tangent, binormal, normal),
+			_normal(normal),
+			_tangent(tangent),
+			_binormal(binormal),
+			_view(view),
+			_transparency(transparency),
+			_reflectivity(reflectivity),
+			_color(color),
+			_specular(specular),
+			_emissive(emissive) {}
 		inline ~fragment_t() {}
 		
 		/// <summary>

@@ -13,7 +13,7 @@ namespace ray
 			if (this->_type == SAMPLETYPE_NEAREST)
 			{
 				RGBQUAD pixel;
-				if (FreeImage_GetPixelColor(this->_texture, texcoord.x, texcoord.y, &pixel))
+				if (FreeImage_GetPixelColor(this->_texture, (int)texcoord.x, (int)texcoord.y, &pixel))
 				{
 					return unpack(pixel.rgbRed, pixel.rgbGreen, pixel.rgbBlue, pixel.rgbReserved);
 				}
@@ -33,9 +33,9 @@ namespace ray
 				size_t y1 = std::min(y0 + 1, height);
 				RGBQUAD pixel0, pixel1, pixel2, pixel3;
 				if (FreeImage_GetPixelColor(this->_texture, x0, y0, &pixel0) &&
-					FreeImage_GetPixelColor(this->_texture, x1, y0, &pixel0) &&
-					FreeImage_GetPixelColor(this->_texture, x0, y1, &pixel0) &&
-					FreeImage_GetPixelColor(this->_texture, x1, y1, &pixel0))
+					FreeImage_GetPixelColor(this->_texture, x1, y0, &pixel1) &&
+					FreeImage_GetPixelColor(this->_texture, x0, y1, &pixel2) &&
+					FreeImage_GetPixelColor(this->_texture, x1, y1, &pixel3))
 				{
 					return
 						(unpack(pixel0.rgbRed, pixel0.rgbGreen, pixel0.rgbBlue, pixel0.rgbReserved) * glm::length(linear0)) +

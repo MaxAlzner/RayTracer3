@@ -5,7 +5,7 @@ namespace ray
 {
 	using namespace glm;
 
-	bool tracesphere_t::hitbyray(const ray_t& ray, rayhit_t* hit)
+	bool tracesphere_t::hitbyray(const ray_t& ray, rayhit_t* hit) const
 	{
 		float a = dot(ray._forward, ray._forward);
 		float b = dot(vec3((this->_center * 2.0f)), ray._forward);
@@ -33,11 +33,11 @@ namespace ray
 							*hit = rayhit_t(
 								ray,
 								t,
-								intersection,
+								intersection/*,
 								clamp(vec2((normal.x + 1.0f) / 2.0f, (normal.y + 1.0f) / 2.0f), vec2(0.0f), vec2(1.0f)),
 								normal,
 								tangent,
-								binormal);
+								binormal*/);
 						}
 
 						return true;
@@ -48,5 +48,25 @@ namespace ray
 
 		return false;
 	}
-
+	
+	fragment_t tracesphere_t::fragmentate(const rayhit_t& hit) const
+	{
+		vec3 normal = glm::normalize(vec3(hit._intersection) - vec3(this->_center));
+		vec3 tangent = cross(normal, vec3(0.0f, 1.0f, 0.0f));
+		vec2 uv = clamp(vec2((normal.x + 1.0f) / 2.0f, (normal.y + 1.0f) / 2.0f), vec2(0.0f), vec2(1.0f));
+		return fragment_t(
+			this->_material,
+			hit._intersection,
+			uv,
+			normal,
+			tangent,
+			cross(normal, tangent),
+			-hit._ray._forward,
+			this->_material->transparency(uv),
+			this->_material->reflectivity(uv),
+			this->_material->color(uv),
+			this->_material->specular(uv),
+			this->_material->emissive(uv));
+	}
+	
 }

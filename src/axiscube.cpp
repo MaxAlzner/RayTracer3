@@ -5,7 +5,7 @@ namespace ray
 {
 	using namespace glm;
 
-	bool traceaxiscube_t::hitbyray(const ray_t& ray, rayhit_t* hit)
+	bool traceaxiscube_t::hitbyray(const ray_t& ray, rayhit_t* hit) const
 	{
 		float a = 1.0f / ray._forward.x;
 		float b = 1.0f / ray._forward.y;
@@ -40,77 +40,140 @@ namespace ray
 			//if (t <= ray.length)
 			//{
 				vec4 intersection = ray._origin + vec4(ray._forward * t, 0.0f);
-				float width = abs(this->_p1.x - this->_p0.x);
-				float height = abs(this->_p1.y - this->_p0.y);
-				float depth = abs(this->_p1.z - this->_p0.z);
-				vec3 toInnerEdge(this->_p0 - intersection);
-				vec3 toOuterEdge(this->_p1 - intersection);
-				vec2 texcoord;
-				vec3 normal;
-				vec3 tangent;
-				vec3 binormal;
-				switch (facein)
-				{
-				case 0:
-					texcoord = vec2(abs(toOuterEdge.z) / (depth), abs(toInnerEdge.y) / (height));
-					normal = vec3(-1.0f, 0.0f, 0.0f);
-					tangent = vec3(0.0f, 0.0f, -1.0f);
-					binormal = vec3(0.0f, -1.0f, 0.0f);
-					break;
-				case 1:
-					texcoord = vec2(abs(toInnerEdge.x) / (width), abs(toOuterEdge.z) / (depth));
-					normal = vec3(0.0f, -1.0f, 0.0f);
-					tangent = vec3(1.0f, 0.0f, 0.0f);
-					binormal = vec3(0.0f, 0.0f, -1.0f);
-					break;
-				case 2:
-					texcoord = vec2(abs(toInnerEdge.x) / (width), abs(toInnerEdge.y) / (height));
-					normal = vec3(0.0f, 0.0f, -1.0f);
-					tangent = vec3(1.0f, 0.0f, 0.0f);
-					binormal = vec3(0.0f, -1.0f, 0.0f);
-					break;
-				case 3:
-					texcoord = vec2(abs(toInnerEdge.z) / (depth), abs(toInnerEdge.y) / (height));
-					normal = vec3(1.0f, 0.0f, 0.0f);
-					tangent = vec3(0.0f, 0.0f, 1.0f);
-					binormal = vec3(0.0f, 1.0f, 0.0f);
-					break;
-				case 4:
-					texcoord = vec2(abs(toInnerEdge.x) / (width), abs(toInnerEdge.z) / (depth));
-					normal = vec3(0.0f, 1.0f, 0.0f);
-					tangent = vec3(1.0f, 0.0f, 0.0f);
-					binormal = vec3(0.0f, 0.0f, 1.0f);
-					break;
-				case 5:
-					texcoord = vec2(abs(toOuterEdge.x) / (width), abs(toInnerEdge.y) / (height));
-					normal = vec3(0.0f, 0.0f, 1.0f);
-					tangent = vec3(1.0f, 0.0f, 0.0f);
-					binormal = vec3(0.0f, 1.0f, 0.0f);
-					break;
-				default:
-					break;
-				}
+				//float width = abs(this->_p1.x - this->_p0.x);
+				//float height = abs(this->_p1.y - this->_p0.y);
+				//float depth = abs(this->_p1.z - this->_p0.z);
+				//vec3 toInnerEdge(this->_p0 - intersection);
+				//vec3 toOuterEdge(this->_p1 - intersection);
+				//vec2 texcoord;
+				//vec3 normal;
+				//vec3 tangent;
+				//vec3 binormal;
+				//switch (facein)
+				//{
+				//case 0:
+				//	texcoord = vec2(abs(toOuterEdge.z) / (depth), abs(toInnerEdge.y) / (height));
+				//	normal = vec3(-1.0f, 0.0f, 0.0f);
+				//	tangent = vec3(0.0f, 0.0f, -1.0f);
+				//	binormal = vec3(0.0f, -1.0f, 0.0f);
+				//	break;
+				//case 1:
+				//	texcoord = vec2(abs(toInnerEdge.x) / (width), abs(toOuterEdge.z) / (depth));
+				//	normal = vec3(0.0f, -1.0f, 0.0f);
+				//	tangent = vec3(1.0f, 0.0f, 0.0f);
+				//	binormal = vec3(0.0f, 0.0f, -1.0f);
+				//	break;
+				//case 2:
+				//	texcoord = vec2(abs(toInnerEdge.x) / (width), abs(toInnerEdge.y) / (height));
+				//	normal = vec3(0.0f, 0.0f, -1.0f);
+				//	tangent = vec3(1.0f, 0.0f, 0.0f);
+				//	binormal = vec3(0.0f, -1.0f, 0.0f);
+				//	break;
+				//case 3:
+				//	texcoord = vec2(abs(toInnerEdge.z) / (depth), abs(toInnerEdge.y) / (height));
+				//	normal = vec3(1.0f, 0.0f, 0.0f);
+				//	tangent = vec3(0.0f, 0.0f, 1.0f);
+				//	binormal = vec3(0.0f, 1.0f, 0.0f);
+				//	break;
+				//case 4:
+				//	texcoord = vec2(abs(toInnerEdge.x) / (width), abs(toInnerEdge.z) / (depth));
+				//	normal = vec3(0.0f, 1.0f, 0.0f);
+				//	tangent = vec3(1.0f, 0.0f, 0.0f);
+				//	binormal = vec3(0.0f, 0.0f, 1.0f);
+				//	break;
+				//case 5:
+				//	texcoord = vec2(abs(toOuterEdge.x) / (width), abs(toInnerEdge.y) / (height));
+				//	normal = vec3(0.0f, 0.0f, 1.0f);
+				//	tangent = vec3(1.0f, 0.0f, 0.0f);
+				//	binormal = vec3(0.0f, 1.0f, 0.0f);
+				//	break;
+				//default:
+				//	break;
+				//}
 
-				if (dot(normal, ray._forward) < 0.0f)
-				{
+				//if (dot(normal, ray._forward) < 0.0f)
+				//{
 					if (hit != 0)
 					{
 						*hit = rayhit_t(
 							ray,
 							t,
-							intersection,
+							intersection/*,
 							texcoord,
 							normal,
 							tangent,
-							binormal);
+							binormal*/);
 					}
 
 					return true;
-				}
+				//}
 			//}
 		}
 
 		return false;
 	}
+	
+	fragment_t traceaxiscube_t::fragmentate(const rayhit_t& hit) const
+	{
+		float a = 1.0f / hit._ray._forward.x;
+		float b = 1.0f / hit._ray._forward.y;
+		float c = 1.0f / hit._ray._forward.z;
+		float txmin = a >= 0.0f ? (this->_p0.x - hit._ray._origin.x) * a : (this->_p1.x - hit._ray._origin.x) * a;
+		float tymin = b >= 0.0f ? (this->_p0.y - hit._ray._origin.y) * b : (this->_p1.y - hit._ray._origin.y) * b;
+		float tzmin = c >= 0.0f ? (this->_p0.z - hit._ray._origin.z) * c : (this->_p1.z - hit._ray._origin.z) * c;
+		int face = tzmin > hit._distance ? (txmin > tymin ? ((a >= 0.0f) ? 0 : 3) : ((b >= 0.0f) ? 1 : 4)) : ((c >= 0.0f) ? 2 : 5);
+		float width = abs(this->_p1.x - this->_p0.x);
+		float height = abs(this->_p1.y - this->_p0.y);
+		float depth = abs(this->_p1.z - this->_p0.z);
+		vec3 toInnerEdge(this->_p0 - hit._intersection);
+		vec3 toOuterEdge(this->_p1 - hit._intersection);
+		vec2 texcoord;
+		vec3 normal;
+		vec3 tangent;
+		vec3 binormal;
+		switch (face)
+		{
+		case 0:
+			texcoord = vec2(abs(toOuterEdge.z) / (depth), abs(toInnerEdge.y) / (height));
+			normal = vec3(-1.0f, 0.0f, 0.0f);
+			tangent = vec3(0.0f, 0.0f, -1.0f);
+			binormal = vec3(0.0f, -1.0f, 0.0f);
+			break;
+		case 1:
+			texcoord = vec2(abs(toInnerEdge.x) / (width), abs(toOuterEdge.z) / (depth));
+			normal = vec3(0.0f, -1.0f, 0.0f);
+			tangent = vec3(1.0f, 0.0f, 0.0f);
+			binormal = vec3(0.0f, 0.0f, -1.0f);
+			break;
+		case 2:
+			texcoord = vec2(abs(toInnerEdge.x) / (width), abs(toInnerEdge.y) / (height));
+			normal = vec3(0.0f, 0.0f, -1.0f);
+			tangent = vec3(1.0f, 0.0f, 0.0f);
+			binormal = vec3(0.0f, -1.0f, 0.0f);
+			break;
+		case 3:
+			texcoord = vec2(abs(toInnerEdge.z) / (depth), abs(toInnerEdge.y) / (height));
+			normal = vec3(1.0f, 0.0f, 0.0f);
+			tangent = vec3(0.0f, 0.0f, 1.0f);
+			binormal = vec3(0.0f, 1.0f, 0.0f);
+			break;
+		case 4:
+			texcoord = vec2(abs(toInnerEdge.x) / (width), abs(toInnerEdge.z) / (depth));
+			normal = vec3(0.0f, 1.0f, 0.0f);
+			tangent = vec3(1.0f, 0.0f, 0.0f);
+			binormal = vec3(0.0f, 0.0f, 1.0f);
+			break;
+		case 5:
+			texcoord = vec2(abs(toOuterEdge.x) / (width), abs(toInnerEdge.y) / (height));
+			normal = vec3(0.0f, 0.0f, 1.0f);
+			tangent = vec3(1.0f, 0.0f, 0.0f);
+			binormal = vec3(0.0f, 1.0f, 0.0f);
+			break;
+		default:
+			break;
+		}
 
+		return fragment_t();
+	}
+	
 }

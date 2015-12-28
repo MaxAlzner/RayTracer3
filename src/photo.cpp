@@ -14,8 +14,8 @@ namespace ray
 		tracepath_t* old = this->_buffer;
 		size_t oldWidth = this->_width;
 		size_t oldHeight = this->_height;
-		this->_width = std::max(width, 1u);
-		this->_height = std::max(height, 1u);
+		this->_width = std::max(width, 1ul);
+		this->_height = std::max(height, 1ul);
 		this->_buffer = (tracepath_t*)calloc(this->_width * this->_height, sizeof(tracepath_t));
 		if (old != 0)
 		{

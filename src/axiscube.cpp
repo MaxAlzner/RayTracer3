@@ -18,12 +18,12 @@ namespace ray
 		float tzmax = c >= 0.0f ? (this->_p1.z - ray._origin.z) * c : (this->_p0.z - ray._origin.z) * c;
 		float t0 = txmin > tymin ? txmin : tymin;
 		float t1 = txmax < tymax ? txmax : tymax;
-		int facein = txmin > tymin ? ((a >= 0.0f) ? 0 : 3) : ((b >= 0.0f) ? 1 : 4);
+		// int facein = txmin > tymin ? ((a >= 0.0f) ? 0 : 3) : ((b >= 0.0f) ? 1 : 4);
 		// int faceout = txmax < tymax ? ((a >= 0.0f) ? 3 : 0) : ((b >= 0.0f) ? 4 : 1);
 		if (tzmin > t0)
 		{
 			t0 = tzmin;
-			facein = (c >= 0.0f) ? 2 : 5;
+			// facein = (c >= 0.0f) ? 2 : 5;
 		}
 
 		if (tzmax < t1)

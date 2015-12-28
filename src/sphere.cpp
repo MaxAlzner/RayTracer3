@@ -24,8 +24,8 @@ namespace ray
 				//{
 					vec4 intersection = ray._origin + vec4(ray._forward * t, 0.0f);
 					vec3 normal = glm::normalize(vec3(intersection) - vec3(this->_center));
-					vec3 tangent = cross(normal, vec3(0.0f, 1.0f, 0.0f));
-					vec3 binormal = cross(normal, tangent);
+					// vec3 tangent = cross(normal, vec3(0.0f, 1.0f, 0.0f));
+					// vec3 binormal = cross(normal, tangent);
 					if (dot(normal, ray._forward) < 0.0f)
 					{
 						if (hit != 0)

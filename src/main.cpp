@@ -24,12 +24,23 @@ using namespace glm;
 
 static std::map<std::string, std::string> preferences;
 
-std::string workingdir()
+inline std::string workingdir()
 {
 #if defined(__linux__)
     return std::string(getenv("HOME")) + "/.raytracer";
 #elif defined(_WIN32)
     return std::string(getenv("APPDATA")) + "\\RayTracer";
+#else
+    return std::string();
+#endif
+}
+
+inline std::string resolvepath(const std::string& folder, const std::string& filename)
+{
+#if defined(__linux__)
+    return (folder + "/") + filename;
+#elif defined(_WIN32)
+    return (folder + "//") + filename;
 #else
     return std::string();
 #endif

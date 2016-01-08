@@ -15,7 +15,7 @@ namespace ray
 		float d = glm::length(l);
 		l = normalize(l);
 		float atten = std::min(this->_intensity / d, 1.0f);
-		return fragment._material->shade(lighting_t(l, this->occlusion(fragment) * atten), fragment);
+		return fragment._material->shade(lighting_t(l, /*this->occlusion(fragment) * atten*/1.0f), fragment);
 	}
 	
 	float pointlight_t::occlusion(const fragment_t& fragment)

@@ -18,10 +18,10 @@ namespace ray
 		/// <param name="aperture">2 dimensional vector representing the dimensions of the camera's viewport.</param>
 		/// <param name="focalDepth">How far away the focal point is from the center of the viewport.</param>
 		inline camera_t(const shape_transformation& transform, const glm::vec2& aperture, const float focalDepth) :
-			_p0(glm::vec3(transform.apply(glm::vec4(-aperture.x / 2.0f, -aperture.y / 2.0f, 0.0f, 0.0f)))),
-			_u(glm::vec3(transform.apply(glm::vec4(1.0f, 0.0f, 0.0f, 0.0f)))),
-			_v(glm::vec3(transform.apply(glm::vec4(0.0f, -1.0f, 0.0f, 0.0f)))),
-			_focal(glm::vec3(transform.apply(glm::vec4(0.0f, 0.0f, 0.0f, -focalDepth)))) {}
+			_p0(glm::vec3(transform.apply(glm::vec4(-aperture.x / 2.0f, -aperture.y / 2.0f, 0.0f, 1.0f)))),
+			_u(glm::vec3(transform.apply(glm::vec4(aperture.x, 0.0f, 0.0f, 0.0f)))),
+			_v(glm::vec3(transform.apply(glm::vec4(0.0f, aperture.y, 0.0f, 0.0f)))),
+			_focal(glm::vec3(transform.apply(glm::vec4(0.0f, 0.0f, -focalDepth, 1.0f)))) {}
 		inline ~camera_t() {}
 		
 		/// <summary>
@@ -62,11 +62,27 @@ namespace ray
 	/// <summary>
 	/// Contains methods and properties for a stack of objects used in tracing a scene.
 	/// </summary>
-	struct tracestack_t
+	class tracestack_t
 	{
+	public:
 		
 		inline tracestack_t() {}
 		inline ~tracestack_t() {}
+
+		/// <summary>
+		/// Gets the traceable object that is nearest to the given ray.
+		/// </summary>
+		/// <param name="ray">Ray to trace to intersect with the stack of traceable objects.</param>
+		/// <param name="hit">Pointer to a rayhit, if the ray does intersect with any of the stack of objects the calculated rayhit will be outputted here.</param>
+		/// <returns>The nearest traceable object or null if no objects where hit.</returns>
+		const traceable_t* nearest(const ray_t& ray, rayhit_t* hit = 0) const;
+		/// <summary>
+		/// Gets the traceable object that is farthest from the given ray.
+		/// </summary>
+		/// <param name="ray">Ray to trace to intersect with the stack of traceable objects.</param>
+		/// <param name="hit">Pointer to a rayhit, if the ray does intersect with any of the stack of objects the calculated rayhit will be outputted here.</param>
+		/// <returns>The farthest traceable object or null if no objects where hit.</returns>
+		const traceable_t* farthest(const ray_t& ray, rayhit_t* hit = 0) const;
 		
 		/// <summary>
 		/// List of traceable objects.
@@ -76,10 +92,6 @@ namespace ray
 		/// List of lights to illuminate the traceable objects.
 		/// </summary>
 		std::list<light_t*> _lights;
-		// /// <summary>
-		// /// Camera that will cast all traced rays.
-		// /// </summary>
-		// camera_t* _camera;
 		
 	};
 

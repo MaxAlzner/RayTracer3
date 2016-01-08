@@ -41,11 +41,18 @@ namespace ray
 	
 	void photo_t::trace(const tracestack_t& stack, const camera_t& camera)
 	{
-		for (size_t i = 0; i < this->_width; i++)
+		for (size_t i = 0; i < this->_height; i++)
 		{
-			for (size_t k = 0; k < this->_height; k++)
+			for (size_t k = 0; k < this->_width; k++)
 			{
-				// tracepath_t* path = &(this->operator[](glm::ivec2(k, i)));
+				ray_t ray = camera.cast(float(k) / float(this->_width), float(i) / float(this->_height));
+				rayhit_t hit;
+				const traceable_t* obj = stack.nearest(ray, &hit);
+				if (obj != 0)
+				{
+					tracepath_t* path = &(this->operator[](glm::ivec2(k, i)));
+					*path = obj->fragmentate(hit);
+				}
 			}
 		}
 	}

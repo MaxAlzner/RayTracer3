@@ -18,7 +18,7 @@ namespace ray
 		/// </summary>
 		/// <param name="ray">A ray to intersect with the shape.</param>
 		/// <param name="hit">Pointer to a rayhit, if the ray does intersect with the object the calculated rayhit will be outputted here.</param>
-		virtual bool hitbyray(const ray_t& ray, rayhit_t* hit) const = 0;
+		virtual bool hitbyray(const ray_t& ray, rayhit_t* hit = 0) const = 0;
 		
 		/// <summary>
 		/// Gets the surface fragment for the given ray hit.
@@ -56,7 +56,7 @@ namespace ray
 		/// </summary>
 		/// <param name="ray">A ray to intersect with the shape.</param>
 		/// <param name="hit">Pointer to a rayhit, if the ray does intersect with the object the calculated rayhit will be outputted here.</param>
-		bool hitbyray(const ray_t& ray, rayhit_t* hit) const;
+		bool hitbyray(const ray_t& ray, rayhit_t* hit = 0) const;
 		
 		/// <summary>
 		/// Gets the surface fragment for the given ray hit.
@@ -106,7 +106,7 @@ namespace ray
 		/// </summary>
 		/// <param name="ray">A ray to intersect with the shape.</param>
 		/// <param name="hit">Pointer to a rayhit, if the ray does intersect with the object the calculated rayhit will be outputted here.</param>
-		bool hitbyray(const ray_t& ray, rayhit_t* hit) const;
+		bool hitbyray(const ray_t& ray, rayhit_t* hit = 0) const;
 		
 		/// <summary>
 		/// Gets the surface fragment for the given ray hit.

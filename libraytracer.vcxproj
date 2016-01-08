@@ -143,6 +143,7 @@
     <ClCompile Include="src\photo.cpp" />
     <ClCompile Include="src\pointlight.cpp" />
     <ClCompile Include="src\sphere.cpp" />
+    <ClCompile Include="src\stack.cpp" />
     <ClCompile Include="src\texturefilter.cpp" />
   </ItemGroup>
   <ItemGroup>

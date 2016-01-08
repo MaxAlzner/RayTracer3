@@ -173,7 +173,19 @@ namespace ray
 			break;
 		}
 
-		return fragment_t();
+		return fragment_t(
+			this->_material,
+			hit._intersection,
+			texcoord,
+			normal,
+			tangent,
+			binormal,
+			-hit._ray._forward,
+			this->_material != 0 ? this->_material->transparency(texcoord) : 0.0f,
+			this->_material != 0 ? this->_material->reflectivity(texcoord) : 0.0f,
+			this->_material != 0 ? this->_material->color(texcoord) : vec4(1.0f, 0.0f, 1.0f, 1.0f),
+			this->_material != 0 ? this->_material->specular(texcoord) : vec4(0.0f),
+			this->_material != 0 ? this->_material->emissive(texcoord) : vec4(0.0f));
 	}
 	
 }

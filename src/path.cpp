@@ -24,7 +24,7 @@ namespace ray
 		lumination_t albedo(0.0f, 0.0f);
 		if (this->_stack != 0)
 		{
-			for (std::list<light_t*>::iterator i = this->_stack->_lights.begin(); i != this->_stack->_lights.end(); i++)
+			for (std::list<light_t*>::const_iterator i = this->_stack->_lights.begin(); i != this->_stack->_lights.end(); i++)
 			{
 				light_t* light = *i;
 				if (light != 0)

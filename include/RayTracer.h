@@ -62,7 +62,7 @@ namespace ray
 	class light_t;
 	
 	class camera_t;
-	struct tracestack_t;
+	class tracestack_t;
 	class tracepath_t;
 	class photo_t;
 

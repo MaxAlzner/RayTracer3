@@ -188,10 +188,10 @@ int main(int argc, char** argv)
 	shape_init();
 
     scan();
-    
+
     photo_t photo(pref_i("photo_x"), pref_i("photo_y"));
     tracestack_t stack;
-    stack._traceables.push_back(new tracesphere_t(vec4(0.0f, 0.0f, 0.0f, 1.0f), 4.0f));
+    stack._traceables.push_back(new tracesphere_t(vec4(0.0f, 0.0f, 0.0f, 1.0f), 2.4f));
     stack._lights.push_back(new pointlight_t(vec4(0.4f, 4.0f, 0.0f, 1.0f), vec4(1.0f), 1.0f));
     camera_t camera(shape_transformation(vec3(0.0f, 0.0f, -4.0f), vec3(1.0f), vec3(0.0f)), vec2(4.0f, 3.0f), 1.6f);
     
@@ -201,7 +201,7 @@ int main(int argc, char** argv)
     
     photo.release();
     
-	_getch();
+	//_getch();
 	shape_release();
 	FreeImage_DeInitialise();
     return 0;

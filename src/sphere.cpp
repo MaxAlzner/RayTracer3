@@ -7,9 +7,10 @@ namespace ray
 
 	bool tracesphere_t::hitbyray(const ray_t& ray, rayhit_t* hit) const
 	{
+		vec3 p = vec3(ray._origin - this->_center);
 		float a = dot(ray._forward, ray._forward);
-		float b = dot(vec3((this->_center * 2.0f)), ray._forward);
-		float c = dot(this->_center, this->_center) - (this->_radius * this->_radius);
+		float b = dot(vec3((p * 2.0f)), ray._forward);
+		float c = dot(p, p) - (this->_radius * this->_radius);
 		float d = (b * b) - (4.0f * a * c);
 		if (d >= 0.0f)
 		{
@@ -62,11 +63,11 @@ namespace ray
 			tangent,
 			cross(normal, tangent),
 			-hit._ray._forward,
-			this->_material->transparency(uv),
-			this->_material->reflectivity(uv),
-			this->_material->color(uv),
-			this->_material->specular(uv),
-			this->_material->emissive(uv));
+			this->_material != 0 ? this->_material->transparency(uv) : 0.0f,
+			this->_material != 0 ? this->_material->reflectivity(uv) : 0.0f,
+			this->_material != 0 ? this->_material->color(uv) : vec4(1.0f, 0.0f, 1.0f, 1.0f),
+			this->_material != 0 ? this->_material->specular(uv) : vec4(0.0f),
+			this->_material != 0 ? this->_material->emissive(uv) : vec4(0.0f));
 	}
 	
 }

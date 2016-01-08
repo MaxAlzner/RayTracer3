@@ -64,7 +64,7 @@ inline bool fileexists(const std::string& filename)
 		fclose(file);
 		return true;
 	}
-
+	
 	return false;
 }
 
@@ -109,7 +109,7 @@ void ensureprefs()
 		{
 			printf("Failed to open to write: %s\n", filename.c_str());
 		}
-
+		
 		file.close();
 	}
 }
@@ -151,7 +151,7 @@ void parse_ini(const std::string& filename)
 	{
 		printf("Failed to open to read: %s\n", filename.c_str());
 	}
-
+	
 	file.close();
 }
 
@@ -170,7 +170,7 @@ void scan()
 			{
 				std::string filetype = filename.substr(filename.find_last_of(".") + 1);
 				filename = resolvepath(env, filename);
-				printf(" found: %s\n", filename.c_str());
+				printf("Found file : %s\n", filename.c_str());
 				if (filetype == "ini") { parse_ini(filename); }
 			}
 		}
@@ -183,12 +183,12 @@ int main(int argc, char** argv)
 {
 	ensurefolder(workingdir());
 	ensureprefs();
-
+	
 	FreeImage_Initialise();
 	shape_init();
-
+	
     scan();
-
+    
     photo_t photo(pref_i("photo_x"), pref_i("photo_y"));
     tracestack_t stack;
     stack._traceables.push_back(new tracesphere_t(vec4(0.0f, 0.0f, 0.0f, 1.0f), 2.4f));

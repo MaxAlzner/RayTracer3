@@ -12,9 +12,9 @@ namespace ray
 		}
 		
 		glm::vec3 l = glm::vec3(this->_position - fragment._position);
-		float d = glm::length(l);
+		// float d = glm::length(l);
 		l = normalize(l);
-		float atten = std::min(this->_intensity / d, 1.0f);
+		// float atten = std::min(this->_intensity / d, 1.0f);
 		return fragment._material->shade(lighting_t(l, /*this->occlusion(fragment) * atten*/1.0f), fragment);
 	}
 	

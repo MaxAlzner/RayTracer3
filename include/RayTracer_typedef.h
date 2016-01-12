@@ -278,7 +278,7 @@ namespace ray
 		/// <returns>4 dimensional vector representing a color (R, G, B, A).</returns>
 		inline glm::vec4 flatten() const
 		{
-			return this->_diffuse + ((glm::vec4(1.0f) - this->_diffuse) * this->_specular);
+			return glm::max(this->_diffuse + ((glm::vec4(1.0f) - this->_diffuse) * this->_specular), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 		}
 		
 		inline lumination_t operator+() const

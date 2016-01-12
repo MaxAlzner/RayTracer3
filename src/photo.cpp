@@ -51,7 +51,7 @@ namespace ray
 				if (obj != 0)
 				{
 					tracepath_t* path = &(this->operator[](glm::ivec2(k, i)));
-					*path = obj->fragmentate(hit);
+					*path = tracepath_t(obj->fragmentate(hit), stack, 0, 0);
 				}
 			}
 		}

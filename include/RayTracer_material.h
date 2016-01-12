@@ -150,4 +150,76 @@ namespace ray
 		
 	};
 	
+	/// <summary>
+	/// Contains methods and properties for a lambert material.
+	/// </summary>
+	class lambert_t : public material_t
+	{
+	public:
+
+		inline lambert_t() {}
+		inline ~lambert_t() {}
+
+		/// <summary>
+		/// Calculates lumination for a given surface fragment.
+		/// </summary>
+		/// <param name="lighting">Lighting data to illuminate the surface.</param>
+		/// <param name="fragment">Surface to be illuminated.</param>
+		/// <returns>Lumination for the surface fragment.</returns>
+		lumination_t shade(const lighting_t& lighting, const fragment_t& fragment) const;
+
+	};
+
+	/// <summary>
+	/// Contains methods and properties for a phong material.
+	/// </summary>
+	class phong_t : public material_t
+	{
+	public:
+
+		inline phong_t() : _exponent(16.0f) {}
+		/// <param name="exponent">Value used in calculating the material's highlight.</param>
+		inline phong_t(const float exponent) : _exponent(exponent) {}
+		inline ~phong_t() {}
+
+		/// <summary>
+		/// Calculates lumination for a given surface fragment.
+		/// </summary>
+		/// <param name="lighting">Lighting data to illuminate the surface.</param>
+		/// <param name="fragment">Surface to be illuminated.</param>
+		/// <returns>Lumination for the surface fragment.</returns>
+		lumination_t shade(const lighting_t& lighting, const fragment_t& fragment) const;
+
+	protected:
+
+		float _exponent;
+
+	};
+
+	/// <summary>
+	/// Contains methods and properties for a blinn material.
+	/// </summary>
+	class blinn_t : public material_t
+	{
+	public:
+
+		inline blinn_t() : _exponent(32.0f) {}
+		/// <param name="exponent">Value used in calculating the material's highlight.</param>
+		inline blinn_t(const float exponent) : _exponent(exponent) {}
+		inline ~blinn_t() {}
+
+		/// <summary>
+		/// Calculates lumination for a given surface fragment.
+		/// </summary>
+		/// <param name="lighting">Lighting data to illuminate the surface.</param>
+		/// <param name="fragment">Surface to be illuminated.</param>
+		/// <returns>Lumination for the surface fragment.</returns>
+		lumination_t shade(const lighting_t& lighting, const fragment_t& fragment) const;
+
+	protected:
+
+		float _exponent;
+
+	};
+
 }

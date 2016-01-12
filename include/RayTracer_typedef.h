@@ -268,8 +268,8 @@ namespace ray
 		/// <param name="diffuse">Base diffuse color as scalar value.</param>
 		/// <param name="diffuse">Highlight specular color as scalar value.</param>
 		inline lumination_t(const float diffuse, const float specular) :
-			_diffuse(diffuse),
-			_specular(specular) {}
+			_diffuse(diffuse, diffuse, diffuse, 1.0f),
+			_specular(specular, specular, specular, 1.0f) {}
 		inline ~lumination_t() {}
 		
 		/// <summary>

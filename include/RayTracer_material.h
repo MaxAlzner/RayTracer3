@@ -4,26 +4,40 @@ namespace ray
 {
 	
 	/// <summary>
+	/// Enumeration for texture sampling types.
+	/// </summary>
+	enum SAMPLETYPE
+	{
+		/// <summary>
+		/// Sample the nearest pixel to the texture coordinate.
+		/// </summary>
+		SAMPLETYPE_NEAREST,
+		/// <summary>
+		/// Bias the sampling based on how close the texture coordinate is to nearby pixels.
+		/// </summary>
+		SAMPLETYPE_LINEAR
+	};
+	
+	/// <summary>
+	/// Enumeration for type of textures.
+	/// </summary>
+	enum TEXTURETYPE
+	{
+		TEXTURETYPE_COLOR,
+		TEXTURETYPE_NORMAL,
+		TEXTURETYPE_SPECULAR,
+		TEXTURETYPE_TRANSPARENCY,
+		TEXTURETYPE_REFLECTIVITY,
+		TEXTURETYPE_EMISSIVE,
+		TEXTURETYPE_DISPLACEMENT,
+	};
+	
+	/// <summary>
 	/// Contains methods and properties for referencing and sampling a texture.
 	/// </summary>
 	class texturefilter_t
 	{
 	public:
-		
-		/// <summary>
-		/// Enumeration for texture sampling types.
-		/// </summary>
-		enum SAMPLETYPE
-		{
-			/// <summary>
-			/// Sample the nearest pixel to the texture coordinate.
-			/// </summary>
-			SAMPLETYPE_NEAREST,
-			/// <summary>
-			/// Bias the sampling based on how close the texture coordinate is to nearby pixels.
-			/// </summary>
-			SAMPLETYPE_LINEAR
-		};
 		
 		inline texturefilter_t() :
 			_texture(0),
@@ -71,20 +85,6 @@ namespace ray
 	class material_t
 	{
 	public:
-		
-		/// <summary>
-		/// Enumeration for type of textures.
-		/// </summary>
-		enum TEXTURETYPE
-		{
-			TEXTURETYPE_COLOR,
-			TEXTURETYPE_NORMAL,
-			TEXTURETYPE_SPECULAR,
-			TEXTURETYPE_TRANSPARENCY,
-			TEXTURETYPE_REFLECTIVITY,
-			TEXTURETYPE_EMISSIVE,
-			TEXTURETYPE_DISPLACEMENT,
-		};
 		
 		/// <summary>
 		/// Calculates lumination for a given surface fragment.

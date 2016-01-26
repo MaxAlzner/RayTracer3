@@ -1,7 +1,6 @@
 #pragma once
 
 #define _CRT_SECURE_NO_WARNINGS
-#define GLM_FORCE_RADIANS
 
 #include <stdlib.h>
 #include <math.h>
@@ -28,6 +27,7 @@
 #include <list>
 #include <map>
 
+#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 

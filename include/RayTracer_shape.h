@@ -89,7 +89,7 @@ namespace ray
 	/// <summary>
 	/// Contains methods and properties for a traceable axis-aligned cube.
 	/// </summary>
-	class traceaxiscube_t : traceable_t
+	class traceaxiscube_t : public traceable_t
 	{
 	public:
 

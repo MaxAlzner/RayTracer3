@@ -30,6 +30,6 @@ clean:
 	@rm -rf $(OBJDIR)
 	@rm -rf $(BINDIR)
 
-.PHONY: debug
-debug:
-	@$(TARGET)
+.PHONY: testdata
+testdata:
+	@cp -f data/*.* ~/.raytracer

@@ -142,7 +142,7 @@ void parse_ini(const std::string& filename)
 				size_t seperator = line.find_first_of('=');
 				std::string key = trim(line.substr(0, seperator));
 				std::string value = trim(line.substr(seperator + 1));
-				printf("  pref: %s = %s\n", key.c_str(), value.c_str());
+				printf("  %s = %s\n", key.c_str(), value.c_str());
 				preferences[key] = value;
 			}
 		}
@@ -190,13 +190,27 @@ int main(int argc, char** argv)
     scan();
     
     photo_t photo(pref_i("photo_x"), pref_i("photo_y"));
-    tracestack_t stack;
-	tracesphere_t sphere0(vec4(0.0f, 0.0f, 0.0f, 1.0f), 2.4f);
+    
+    FIBITMAP* uvgrid01 = FreeImage_Load(FIF_JPEG, resolvefile("uvgrid01.jpg").c_str(), JPEG_DEFAULT);
+    FIBITMAP* uvgrid02 = FreeImage_Load(FIF_PNG, resolvefile("uvgrid02.png").c_str(), PNG_DEFAULT);
 	lambert_t lambert0;
-	sphere0.attach(&lambert0);
+	lambert0.attach(texturefilter_t(uvgrid01, SAMPLETYPE_LINEAR), TEXTURETYPE_COLOR);
+	blinn_t blinn0(48.0f);
+	blinn0.attach(texturefilter_t(uvgrid02, SAMPLETYPE_LINEAR), TEXTURETYPE_COLOR);
+	
+    tracestack_t stack;
+    
+	tracesphere_t sphere0(vec4(0.0f, 0.0f, 0.0f, 1.0f), 2.4f);
+	sphere0.attach(&blinn0);
     stack._traceables.push_back(&sphere0);
-    stack._lights.push_back(new pointlight_t(vec4(0.4f, 4.0f, -2.0f, 1.0f), vec4(1.0f), 1.0f));
-    camera_t camera(shape_transformation(vec3(0.0f, 0.0f, -4.0f), vec3(1.0f), vec3(0.0f)), vec2(4.0f, 3.0f), 1.6f);
+    
+    traceaxiscube_t cube0(vec4(3.0f, 0.0f, 0.0f, 1.0f), 4.0f, 4.0f, 4.0f);
+    cube0.attach(&lambert0);
+    stack._traceables.push_back(&cube0);
+    
+    stack._lights.push_back(new pointlight_t(vec4(0.4f, 1.0f, -3.0f, 1.0f), vec4(1.0f), 1.0f));
+    
+    camera_t camera(shape_transformation(vec3(0.0f, 0.0f, -4.0f), vec3(1.0f), vec3(0.0f)), vec2(4.0f, 3.0f), 2.4f);
     
     photo.trace(stack, camera);
     FIBITMAP* bitmap = photo.rasterize();

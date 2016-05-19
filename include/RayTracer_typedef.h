@@ -252,6 +252,81 @@ namespace ray
 	}
 	
 	/// <summary>
+	/// Contains methods and properties for an object's transformation.
+	/// </summary>
+	struct transform_t
+	{
+		
+		inline transform_t() :
+			_position(0.0f, 0.0f, 0.0f, 1.0f),
+			_forward(0.0f, 0.0f, 1.0f),
+			_right(1.0f, 0.0f, 0.0f),
+			_up(0.0f, 1.0f, 0.0f),
+			_scale(1.0f, 1.0f, 1.0f) {}
+		/// <param name="position">4 dimensional vector representing the position of the transformation.</param>
+		/// <param name="forward">3 dimensional vector representing the forward direction of the transformation.</param>
+		/// <param name="right">3 dimensional vector representing the left and right direction of the transformation.</param>
+		/// <param name="up">3 dimensional vector representing the up and down direction of the transformation.</param>
+		/// <param name="scale">3 dimensional vector representing the scale of the transformation.</param>
+		inline transform_t(
+			const glm::vec4& position,
+			const glm::vec3& forward,
+			const glm::vec3& right,
+			const glm::vec3& up,
+			const glm::vec3& scale) :
+			_position(position),
+			_forward(forward),
+			_right(right),
+			_up(up),
+			_scale(scale),
+			_translation(glm::scale(scale) * glm::translate(position)),
+			_space(glm::rotate(rotation.x, glm::vec3(1.0f, 0.0f, 0.0f)) *
+			glm::rotate(rotation.y, glm::vec3(0.0f, 1.0f, 0.0f)) *
+			glm::rotate(rotation.z, glm::vec3(0.0f, 0.0f, 1.0f))) {}
+		/// <param name="translation">4 dimensional matrix representing the position and scale of the transformation.</param>
+		/// <param name="space">4 dimensional matrix representing the transformation space of the transformation.</param>
+		inline transform_t(const glm::mat4& translation, const glm::mat4& space) :
+			_position(translation * (space * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))),
+			_forward(glm::vec3(translation * (space * glm::vec4(0.0f, 0.0f, 1.0f, 0.0f)))),
+			_right(glm::vec3(translation * (space * glm::vec4(1.0f, 0.0f, 0.0f, 0.0f)))),
+			_up(glm::vec3(translation * (space * glm::vec4(0.0f, 1.0f, 0.0f, 0.0f)))),
+			_scale(glm::mat3(space) * glm::vec3(1.0f, 1.0f, 1.0f)),
+			_translation(translation),
+			_space(space) {}
+		inline ~transform_t() {}
+		
+		/// <summary>
+		/// Position of the transformation.
+		/// </summary>
+		glm::vec4 _position;
+		/// <summary>
+		/// Forward directional vector of the transformation.
+		/// </summary>
+		glm::vec3 _forward;
+		/// <summary>
+		/// Right directional vector of the transformation.
+		/// </summary>
+		glm::vec3 _right;
+		/// <summary>
+		/// Up directional vector of the transformation.
+		/// </summary>
+		glm::vec3 _up;
+		/// <summary>
+		/// Scale of the transformation.
+		/// </summary>
+		glm::vec3 _scale;
+		/// <summary>
+		/// Translating and scale matrix of the transformation.
+		/// </summary>
+		glm::mat4 _translation;
+		/// <summary>
+		/// Rotational space matrix of the transformation.
+		/// </summary>
+		glm::mat4 _space;
+		
+	};
+	
+	/// <summary>
 	/// Contains methods and properties for calculated lumination datatype.
 	/// </summary>
 	struct lumination_t

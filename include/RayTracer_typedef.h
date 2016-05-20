@@ -279,10 +279,8 @@ namespace ray
 			_right(right),
 			_up(up),
 			_scale(scale),
-			_translation(glm::scale(scale) * glm::translate(position)),
-			_space(glm::rotate(rotation.x, glm::vec3(1.0f, 0.0f, 0.0f)) *
-			glm::rotate(rotation.y, glm::vec3(0.0f, 1.0f, 0.0f)) *
-			glm::rotate(rotation.z, glm::vec3(0.0f, 0.0f, 1.0f))) {}
+			_translation(glm::scale(scale) * glm::translate(glm::vec3(position))),
+			_space(glm::vec4(right, 0.0f), glm::vec4(forward, 0.0f), glm::vec4(up, 0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)) {}
 		/// <param name="translation">4 dimensional matrix representing the position and scale of the transformation.</param>
 		/// <param name="space">4 dimensional matrix representing the transformation space of the transformation.</param>
 		inline transform_t(const glm::mat4& translation, const glm::mat4& space) :
@@ -294,6 +292,22 @@ namespace ray
 			_translation(translation),
 			_space(space) {}
 		inline ~transform_t() {}
+		
+		/// <summary>
+		/// Maps the given 4 dimensional vector in relation to the transform's position, orientation, and scale.
+		/// </summary>
+		inline glm::vec4 map(const glm::vec4& v) const
+		{
+			return (this->_translation * (this->_space * v));
+		}
+		
+		/// <summary>
+		/// Maps the given 3 dimensional vector in relation to the transform's position, orientation, and scale.
+		/// </summary>
+		inline glm::vec3 map(const glm::vec3& v) const
+		{
+			return glm::vec3(this->_translation * (this->_space * glm::vec4(v, 0.0f)));
+		}
 		
 		/// <summary>
 		/// Position of the transformation.

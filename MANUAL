@@ -1,0 +1,74 @@
+
+Usage: raytracer [OPTION]... [FILE] [TARGET]
+Renders a raytraced scene from the given file, to the target directory.
+Scene file(s) should be in JSON format.
+
+Mandatory arguments to long options are mandatory for short options too.
+
+Scene JSON format:
+"rander" [object]
+    "photo" [object]
+        "x" [number] Width of the final render
+        "y" [number] Height of the final render
+"camera" [object]
+    "transform" [object]
+        "tx" [number] Translation on X-axis
+        "ty" [number] Translation on Y-axis
+        "tz" [number] Translation on Z-axis
+        "rx" [number] Rotation on X-axis
+        "ry" [number] Rotation on Y-axis
+        "rz" [number] Rotation on Z-axis
+        "sx" [number] Scale on X-axis
+        "sy" [number] Scale on Y-axis
+        "sz" [number] Scale on Z-axis
+        "scale" [number] Scale of all axises
+    "aperture" [object]
+        "x" [number] Horizontal camera width
+        "y" [number] Vertical camera height
+    "focalPoint" [number] Distance that the focal point is from the camera
+"lights" [array]
+    [object]
+        "type" [string] Type of light (point, directional, spot)
+        "intensity" [number] Intensity of light
+        "color" [object]
+            "r" [number] Red color
+            "g" [number] Green color
+            "b" [number] Blue color
+        "transform" [object]
+            "tx" [number] Translation on X-axis
+            "ty" [number] Translation on Y-axis
+            "tz" [number] Translation on Z-axis
+            "rx" [number] Rotation on X-axis
+            "ry" [number] Rotation on Y-axis
+            "rz" [number] Rotation on Z-axis
+"stack" [array]
+    [object]
+        "type" [number] Type of shape
+        #if type = sphere
+        "radius" [number] Radius of the sphere
+        #endif
+        #if type = axiscube
+        "width" [number] Cube size on X-axis
+        "height" [number] Cube size on Y-axis
+        "depth" [number] Cube size on Z-axis
+        #endif
+        "transform" [object]
+            "tx" [number] Translation on X-axis
+            "ty" [number] Translation on Y-axis
+            "tz" [number] Translation on Z-axis
+            "rx" [number] Rotation on X-axis
+            "ry" [number] Rotation on Y-axis
+            "rz" [number] Rotation on Z-axis
+            "sx" [number] Scale on X-axis
+            "sy" [number] Scale on Y-axis
+            "sz" [number] Scale on Z-axis
+            "scale" [number] Scale of all axises
+        "material" [object]
+            "type" [string] Type of material (lambert, blinn, phong)
+            #if type = blin or phong
+            "exp" [number] Lighting exponent
+            #endif
+            "textures" [array]
+                [object]
+                    "type" [string] Type of texture
+                    "filename" [string] Texture file

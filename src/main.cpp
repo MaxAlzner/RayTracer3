@@ -26,6 +26,8 @@
 using namespace ray;
 using namespace glm;
 
+static const char* commandname = "raytracer";
+
 static std::map<std::string, std::string> preferences;
 
 inline std::string trim(const std::string& str)
@@ -94,7 +96,7 @@ inline void ensurefolder(const std::string& folder)
 void ensureprefs()
 {
 	std::string filename = resolvefile("default.ini");
-	printf("%s\n", filename.c_str());
+	// printf("%s\n", filename.c_str());
 	if (!fileexists(filename))
 	{
 		std::ofstream file(filename.c_str());
@@ -161,7 +163,7 @@ void scan()
     DIR* directory = opendir(env.c_str());
     if (directory != 0)
     {
-		printf("Scanning working directory : %s\n", env.c_str());
+		// printf("Scanning working directory : %s\n", env.c_str());
 		dirent* read = 0;
 		while ((read = readdir(directory)) != 0)
 		{
@@ -170,7 +172,7 @@ void scan()
 			{
 				std::string filetype = filename.substr(filename.find_last_of(".") + 1);
 				filename = resolvepath(env, filename);
-				printf("Found file : %s\n", filename.c_str());
+				// printf("Found file : %s\n", filename.c_str());
 				if (filetype == "ini") { parse_ini(filename); }
 			}
 		}
@@ -179,47 +181,146 @@ void scan()
     closedir(directory);
 }
 
+inline void cleanup()
+{
+	// _getch();
+	// shape_release();
+	FreeImage_DeInitialise();
+}
+
+inline void printmissing()
+{
+	printf("%s: missing file operand\n", commandname);
+	printf("Usage: %s [OPTION]... [TARGET]...\n\n", commandname);
+	printf("Try '%s --help' for more information.\n", commandname);
+}
+
+inline void printhelp()
+{
+	printf("Usage: %s [OPTION]... [TARGET]...\n\n", commandname);
+}
+
 int main(int argc, char** argv)
 {
 	ensurefolder(workingdir());
 	ensureprefs();
 	
 	FreeImage_Initialise();
-	shape_init();
+	// shape_init();
 	
-    scan();
+	atexit(cleanup);
+    // scan();
     
-    photo_t photo(pref_i("photo_x"), pref_i("photo_y"));
+    std::string scenepath;
+    std::list<char> options;
+    if (argc == 1)
+    {
+    	printmissing();
+    	return 2;
+    }
+	else if (argc == 2)
+	{
+		std::string arg = argv[1];
+		if (!arg.empty() && arg[0] == '-')
+		{
+			if (arg == "--help")
+			{
+				printhelp();
+				return 0;
+			}
+			else
+			{
+				printmissing();
+				return 2;
+			}
+		}
+		
+		scenepath = arg;
+	}
+	else if (argc == 3)
+	{
+		std::string arg = argv[1];
+		if (!arg.empty() && arg[0] == '-')
+		{
+			arg = arg.substr(1);
+			for (std::string::iterator i = arg.begin(); i != arg.end(); i++)
+			{
+				options.push_back(*i);
+			}
+		}
+		
+		scenepath = argv[2];
+	}
+    else
+    {
+    	printf("Invalid arguments\n");
+    	return 2;
+    }
     
-    FIBITMAP* uvgrid01 = FreeImage_Load(FIF_JPEG, resolvefile("uvgrid01.jpg").c_str(), JPEG_DEFAULT);
-    FIBITMAP* uvgrid02 = FreeImage_Load(FIF_PNG, resolvefile("uvgrid02.png").c_str(), PNG_DEFAULT);
-	lambert_t lambert0;
-	lambert0.attach(texturefilter_t(uvgrid01, SAMPLETYPE_LINEAR), TEXTURETYPE_COLOR);
-	blinn_t blinn0(48.0f);
-	blinn0.attach(texturefilter_t(uvgrid02, SAMPLETYPE_LINEAR), TEXTURETYPE_COLOR);
+    std::ifstream file(scenepath.c_str(), std::ios::binary | std::ios::ate);
+    if (file.is_open())
+    {
+    	std::streamsize size = file.tellg();
+    	file.seekg(0, std::ios::beg);
+    	char* buffer = (char*)malloc(size);
+    	if (file.read(buffer, size))
+    	{
+    		printf("%s\n", buffer);
+    	}
+    	
+    	free(buffer);
+    }
+    
+    // std::ifstream file(resolvefile("demo-scene.json").c_str(), std::ios::binary | std::ios::ate);
+    // std::streamsize size = file.tellg();
+    // file.seekg(0, std::ios::beg);
+    // char* buffer = (char*)malloc(size);
+    // if (file.read(buffer, size))
+    // {
+    // 	printf("%s\n", buffer);
+    	
+    // 	rapidjson::Document json;
+    // 	json.Parse(buffer);
+    // 	rapidjson::Value& camera = json["camera"];
+    // 	printf("  %s\n", camera.IsObject() ? "true" : "false");
+    // 	// rapidjson::Value& test = json["test"];
+    // 	// printf("  %s\n", test.IsNull() ? "true" : "false");
+    // 	printf("  %s\n", json.HasMember("camera") ? "true" : "false");
+    // 	printf("  %s\n", json.HasMember("lights") ? "true" : "false");
+    // 	printf("  %s\n", json.HasMember("stack") ? "true" : "false");
+    // 	printf("  %s\n", json.HasMember("test") ? "true" : "false");
+    // }
+    
+    // free(buffer);
+    
+	// photo_t photo(pref_i("photo_x"), pref_i("photo_y"));
 	
-    tracestack_t stack;
+	// FIBITMAP* uvgrid01 = FreeImage_Load(FIF_JPEG, resolvefile("uvgrid01.jpg").c_str(), JPEG_DEFAULT);
+	// FIBITMAP* uvgrid02 = FreeImage_Load(FIF_PNG, resolvefile("uvgrid02.png").c_str(), PNG_DEFAULT);
+	// lambert_t lambert0;
+	// lambert0.attach(texturefilter_t(uvgrid01, SAMPLETYPE_LINEAR), TEXTURETYPE_COLOR);
+	// blinn_t blinn0(48.0f);
+	// blinn0.attach(texturefilter_t(uvgrid02, SAMPLETYPE_LINEAR), TEXTURETYPE_COLOR);
+	
+	// tracestack_t stack;
+	
+	// tracesphere_t sphere0(vec4(0.0f, 0.0f, 0.0f, 1.0f), 2.4f);
+	// sphere0.attach(&blinn0);
+	// stack._traceables.push_back(&sphere0);
+	
+	// traceaxiscube_t cube0(vec4(3.0f, 0.0f, 0.0f, 1.0f), 4.0f, 4.0f, 4.0f);
+	// cube0.attach(&lambert0);
+	// stack._traceables.push_back(&cube0);
+	
+	// stack._lights.push_back(new pointlight_t(vec4(0.4f, 1.0f, -3.0f, 1.0f), vec4(1.0f), 1.0f));
+	
+	// camera_t camera(shape_transformation(vec3(0.0f, 0.0f, -4.0f), vec3(1.0f), vec3(0.0f)), vec2(4.0f, 3.0f), 2.4f);
+	
+	// photo.trace(stack, camera);
+	// FIBITMAP* bitmap = photo.rasterize();
+	// FreeImage_Save(FIF_PNG, bitmap, resolvefile("test.png").c_str(), 0);
     
-	tracesphere_t sphere0(vec4(0.0f, 0.0f, 0.0f, 1.0f), 2.4f);
-	sphere0.attach(&blinn0);
-    stack._traceables.push_back(&sphere0);
+    // photo.release();
     
-    traceaxiscube_t cube0(vec4(3.0f, 0.0f, 0.0f, 1.0f), 4.0f, 4.0f, 4.0f);
-    cube0.attach(&lambert0);
-    stack._traceables.push_back(&cube0);
-    
-    stack._lights.push_back(new pointlight_t(vec4(0.4f, 1.0f, -3.0f, 1.0f), vec4(1.0f), 1.0f));
-    
-    camera_t camera(shape_transformation(vec3(0.0f, 0.0f, -4.0f), vec3(1.0f), vec3(0.0f)), vec2(4.0f, 3.0f), 2.4f);
-    
-    photo.trace(stack, camera);
-    FIBITMAP* bitmap = photo.rasterize();
-    FreeImage_Save(FIF_PNG, bitmap, resolvefile("test.png").c_str(), 0);
-    
-    photo.release();
-    
-	//_getch();
-	shape_release();
-	FreeImage_DeInitialise();
     return 0;
 }

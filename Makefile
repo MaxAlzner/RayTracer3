@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -Wall -Werror
+CFLAGS = -Wall
 
 INCDIR = include
 SRCDIR = src
@@ -7,7 +7,7 @@ BINDIR = bin
 OBJDIR = obj
 INC = $(wildcard $(INCDIR)/*.*)
 SRC = $(wildcard $(SRCDIR)/*.*)
-OBJ = $(patsubst $(SRCDIR)/%.cpp, $(OBJDIR)/%.o, $(SRC))
+OBJ = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRC))
 LIB = -lshape -lfreeimage
 LIB += -lncurses
 

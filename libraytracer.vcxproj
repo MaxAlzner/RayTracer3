@@ -142,6 +142,7 @@
     <ClCompile Include="src\path.cpp" />
     <ClCompile Include="src\photo.cpp" />
     <ClCompile Include="src\pointlight.cpp" />
+    <ClCompile Include="src\scene.cpp" />
     <ClCompile Include="src\sphere.cpp" />
     <ClCompile Include="src\stack.cpp" />
     <ClCompile Include="src\texturefilter.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="include\RayTracer.h" />
     <ClInclude Include="include\RayTracer_light.h" />
     <ClInclude Include="include\RayTracer_material.h" />
+    <ClInclude Include="include\RayTracer_scene.h" />
     <ClInclude Include="include\RayTracer_shape.h" />
     <ClInclude Include="include\RayTracer_trace.h" />
     <ClInclude Include="include\RayTracer_typedef.h" />

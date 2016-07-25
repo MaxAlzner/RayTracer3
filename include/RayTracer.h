@@ -31,7 +31,15 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
+#include <rapidxml.hpp>
+
+#include <rapidjson/document.h>
+#include <rapidjson/writer.h>
+#include <rapidjson/stringbuffer.h>
+
+#if 0
 #include <shape.h>
+#endif
 
 #include <FreeImage.h>
 
@@ -46,7 +54,7 @@
 
 namespace ray
 {
-
+	
 	typedef FIBITMAP IMAGETYPE;
 	
 	struct ray_t;
@@ -65,7 +73,7 @@ namespace ray
 	class tracestack_t;
 	class tracepath_t;
 	class photo_t;
-
+	
 }
 
 #include "RayTracer_typedef.h"
@@ -73,3 +81,4 @@ namespace ray
 #include "RayTracer_shape.h"
 #include "RayTracer_light.h"
 #include "RayTracer_trace.h"
+#include "RayTracer_scene.h"

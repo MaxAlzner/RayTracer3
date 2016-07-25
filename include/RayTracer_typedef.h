@@ -264,16 +264,26 @@ namespace ray
 			_up(0.0f, 1.0f, 0.0f),
 			_scale(1.0f, 1.0f, 1.0f) {}
 		/// <param name="position">4 dimensional vector representing the position of the transformation.</param>
+		/// <param name="scale">3 dimensional vector representing the scale of the transformation.</param>
+		inline transform_t(const glm::vec4& position, const glm::vec3& scale) :
+			_position(position),
+			_forward(glm::vec3(0.0f, 0.0f, 1.0f)),
+			_right(glm::vec3(1.0f, 0.0f, 0.0f)),
+			_up(glm::vec3(0.0f, 1.0f, 0.0f)),
+			_scale(scale),
+			_translation(glm::scale(scale) * glm::translate(glm::vec3(position))),
+			_space(1.0f) {}
+		/// <param name="position">4 dimensional vector representing the position of the transformation.</param>
+		/// <param name="scale">3 dimensional vector representing the scale of the transformation.</param>
 		/// <param name="forward">3 dimensional vector representing the forward direction of the transformation.</param>
 		/// <param name="right">3 dimensional vector representing the left and right direction of the transformation.</param>
 		/// <param name="up">3 dimensional vector representing the up and down direction of the transformation.</param>
-		/// <param name="scale">3 dimensional vector representing the scale of the transformation.</param>
 		inline transform_t(
 			const glm::vec4& position,
+			const glm::vec3& scale,
 			const glm::vec3& forward,
 			const glm::vec3& right,
-			const glm::vec3& up,
-			const glm::vec3& scale) :
+			const glm::vec3& up) :
 			_position(position),
 			_forward(forward),
 			_right(right),

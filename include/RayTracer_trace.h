@@ -17,11 +17,11 @@ namespace ray
 			_focal(0.0f, 0.0f, 0.0f) {}
 		/// <param name="aperture">2 dimensional vector representing the dimensions of the camera's viewport.</param>
 		/// <param name="focalDepth">How far away the focal point is from the center of the viewport.</param>
-		inline camera_t(const shape_transformation& transform, const glm::vec2& aperture, const float focalDepth) :
-			_p0(glm::vec3(transform.apply(glm::vec4(-aperture.x / 2.0f, -aperture.y / 2.0f, 0.0f, 1.0f)))),
-			_u(glm::vec3(transform.apply(glm::vec4(aperture.x, 0.0f, 0.0f, 0.0f)))),
-			_v(glm::vec3(transform.apply(glm::vec4(0.0f, aperture.y, 0.0f, 0.0f)))),
-			_focal(glm::vec3(transform.apply(glm::vec4(0.0f, 0.0f, -focalDepth, 1.0f)))) {}
+		inline camera_t(const transform_t& transform, const glm::vec2& aperture, const float focalDepth) :
+			_p0(glm::vec3(transform.map(glm::vec4(-aperture.x / 2.0f, -aperture.y / 2.0f, 0.0f, 1.0f)))),
+			_u(glm::vec3(transform.map(glm::vec4(aperture.x, 0.0f, 0.0f, 0.0f)))),
+			_v(glm::vec3(transform.map(glm::vec4(0.0f, aperture.y, 0.0f, 0.0f)))),
+			_focal(glm::vec3(transform.map(glm::vec4(0.0f, 0.0f, -focalDepth, 1.0f)))) {}
 		inline ~camera_t() {}
 		
 		/// <summary>
@@ -204,7 +204,7 @@ namespace ray
 		void trace(const tracestack_t& stack, const camera_t& camera);
 
 		/// <summary>
-		/// Rasteries the buffer of traced paths into a image.
+		/// Rasterizes the buffer of traced paths into a image.
 		/// </summary>
 		/// <returns>An image object.</returns>
 		IMAGETYPE* rasterize() const;

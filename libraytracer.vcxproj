@@ -137,10 +137,10 @@
   <ItemGroup>
     <ClCompile Include="src\axiscube.cpp" />
     <ClCompile Include="src\camera.cpp" />
+    <ClCompile Include="src\emitter.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\material.cpp" />
     <ClCompile Include="src\path.cpp" />
-    <ClCompile Include="src\photo.cpp" />
     <ClCompile Include="src\pointlight.cpp" />
     <ClCompile Include="src\scene.cpp" />
     <ClCompile Include="src\sphere.cpp" />

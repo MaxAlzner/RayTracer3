@@ -4,6 +4,7 @@
 namespace ray
 {
 
+#if 0
 	bool photo_t::empty() const
 	{
 		return this->_buffer == 0 || this->_width < 1 || this->_height < 1;
@@ -87,5 +88,6 @@ namespace ray
 	{
 		return this->_buffer[((coord.y % this->_height) * this->_width) + (coord.x % this->_width)];
 	}
+#endif
 
 }

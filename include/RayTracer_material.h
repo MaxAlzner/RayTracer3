@@ -3,6 +3,8 @@
 namespace ray
 {
 	
+	typedef FIBITMAP IMAGETYPE;
+	
 	/// <summary>
 	/// Enumeration for texture sampling types.
 	/// </summary>

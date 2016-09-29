@@ -155,80 +155,38 @@ namespace ray
 
 	};
 	
+	enum MULTISAMPLETYPE
+	{
+		MULTISAMPLETYPE_SINGLE = 0x0000,
+		MULTISAMPLETYPE_QUAD = 0x0001,
+		MULTISAMPLETYPE_OCT = 0x0002,
+		
+		MULTISAMPLETYPE_EDGE = 0x0010,
+		MULTISAMPLETYPE_RADIUS = 0x0020,
+		MULTISAMPLETYPE_RANDOM = 0x0030
+	};
+	
 	/// <summary>
-	/// Contains methods and properties the result of tracing a scene of traceable objects.
+	/// Contains methods and properties of an emitter that traces rays.
 	/// </summary>
-	class photo_t
+	class emitter_t
 	{
 	public:
-
-		inline photo_t() :
-			_buffer(0),
-			_width(0),
-			_height(0),
+		
+		inline emitter_t() :
 			_reflectDepth(0),
-			_multiSampleRate(0) {}
-		/// <param name="width">Width of the photo.</param>
-		/// <param name="height">Height of the photo.</param>
+			_multiSample(MULTISAMPLETYPE_SINGLE) {}
 		/// <param name="reflectDepth">Reflection depth of the photo.</param>
 		/// <param name="multiSampleRate">Multi sample rate of the photo.</param>
-		inline photo_t(const size_t width, const size_t height, const size_t reflectDepth = 0, const size_t multiSampleRate = 0) :
-			_buffer(0),
-			_width(0),
-			_height(0),
+		inline emitter_t(const size_t reflectDepth = 0, const MULTISAMPLETYPE multiSample = MULTISAMPLETYPE_SINGLE) :
 			_reflectDepth(reflectDepth),
-			_multiSampleRate(multiSampleRate) { this->resize(width, height); }
-		inline ~photo_t() { this->release(); }
-
-		/// <summary>
-		/// Gets a value indicating whether or not the photo is empty.
-		/// </summary>
-		bool empty() const;
-
-		/// <summary>
-		/// Resizes the buffer of trace paths.
-		/// </summary>
-		/// <param name="width">Width of the new buffer.</param>
-		/// <param name="height">Height of the new buffer.</param>
-		void resize(const size_t width, const size_t height);
-		/// <summary>
-		/// Frees the buffer.
-		/// </summary>
-		void release();
+			_multiSample(multiSample) {}
+		inline ~emitter_t() {}
 		
-		/// <summary>
-		/// Traces the stack of traceable objects and puts the resulting trace paths into the trace path buffer.
-		/// </summary>
-		/// <param name="stack">Stack of traceable objects.</param>
-		/// <param name="camera">Camera from which the traced rays originate from.</param>
-		void trace(const tracestack_t& stack, const camera_t& camera);
-
-		/// <summary>
-		/// Rasterizes the buffer of traced paths into a image.
-		/// </summary>
-		/// <returns>An image object.</returns>
-		IMAGETYPE* rasterize() const;
-
-		/// <summary>
-		/// Gets a trace path from the buffer by a 2 dimensional vector.
-		/// </summary>
-		/// <param name="coord">Coordinate inside of the buffer based on it's width and height.</param>
-		tracepath_t& operator[](const glm::ivec2& coord) const;
-
+		void emit(const scene_t& scene, tracepath_t& path);
+		
 	protected:
-
-		/// <summary>
-		/// Buffer of trace paths, allocated based on the width and height.
-		/// </summary>
-		tracepath_t* _buffer;
-		/// <summary>
-		/// Width of the trace path buffer.
-		/// </summary>
-		size_t _width;
-		/// <summary>
-		/// Height of the trace path buffer.
-		/// </summary>
-		size_t _height;
+		
 		/// <summary>
 		/// How many times to reflect off of a traced surface.
 		/// </summary>
@@ -236,8 +194,8 @@ namespace ray
 		/// <summary>
 		/// How many ray to trace per pixel on a axis.
 		/// </summary>
-		size_t _multiSampleRate;
-
+		MULTISAMPLETYPE _multiSample;
+		
 	};
 
 }

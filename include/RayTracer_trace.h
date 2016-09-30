@@ -157,9 +157,9 @@ namespace ray
 	
 	enum MULTISAMPLETYPE
 	{
-		MULTISAMPLETYPE_SINGLE = 0x0000,
-		MULTISAMPLETYPE_QUAD = 0x0001,
-		MULTISAMPLETYPE_OCT = 0x0002,
+		MULTISAMPLETYPE_SINGLE = 0x0001,
+		MULTISAMPLETYPE_QUAD = 0x0002,
+		MULTISAMPLETYPE_OCT = 0x0003,
 		
 		MULTISAMPLETYPE_EDGE = 0x0010,
 		MULTISAMPLETYPE_RADIUS = 0x0020,
@@ -175,10 +175,10 @@ namespace ray
 		
 		inline emitter_t() :
 			_reflectDepth(0),
-			_multiSample(MULTISAMPLETYPE_SINGLE) {}
+			_multiSample(MULTISAMPLETYPE_SINGLE | MULTISAMPLETYPE_EDGE) {}
 		/// <param name="reflectDepth">Reflection depth of the photo.</param>
 		/// <param name="multiSampleRate">Multi sample rate of the photo.</param>
-		inline emitter_t(const size_t reflectDepth = 0, const MULTISAMPLETYPE multiSample = MULTISAMPLETYPE_SINGLE) :
+		inline emitter_t(const size_t reflectDepth, const int multiSample) :
 			_reflectDepth(reflectDepth),
 			_multiSample(multiSample) {}
 		inline ~emitter_t() {}
@@ -194,7 +194,7 @@ namespace ray
 		/// <summary>
 		/// How many ray to trace per pixel on a axis.
 		/// </summary>
-		MULTISAMPLETYPE _multiSample;
+		int _multiSample;
 		
 	};
 

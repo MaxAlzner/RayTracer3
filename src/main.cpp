@@ -257,19 +257,8 @@ int main(int argc, char** argv)
     	return 2;
     }
     
-    std::ifstream file(scenepath.c_str(), std::ios::binary | std::ios::ate);
-    if (file.is_open())
-    {
-    	std::streamsize size = file.tellg();
-    	file.seekg(0, std::ios::beg);
-    	char* buffer = (char*)malloc(size);
-    	if (file.read(buffer, size))
-    	{
-    		printf("%s\n", buffer);
-    	}
-    	
-    	free(buffer);
-    }
+    scene_t s0;
+    read_scene(scenepath.c_str(), s0);
     
     // std::ifstream file(resolvefile("demo-scene.json").c_str(), std::ios::binary | std::ios::ate);
     // std::streamsize size = file.tellg();

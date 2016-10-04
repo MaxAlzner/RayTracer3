@@ -197,7 +197,19 @@ inline void printmissing()
 
 inline void printhelp()
 {
-	printf("Usage: %s [OPTION]... [TARGET]...\n\n", commandname);
+	std::ifstream file("MANUAL");
+	if (file.is_open())
+	{
+		std::string line;
+		while (std::getline(file, line))
+		{
+			std::cout << line << "\n";
+		}
+	}
+	else
+	{
+		printf("Faile to find manual file.\n");
+	}
 }
 
 int main(int argc, char** argv)

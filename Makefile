@@ -17,6 +17,8 @@ $(TARGET): compile
 	@echo "Building"
 	@mkdir -p $(BINDIR)
 	$(CC) -o $@ $(OBJ) $(CFLAGS) $(LIB)
+	@cp -f ./MANUAL $(BINDIR)
+	@cp -f ./LICENSE $(BINDIR)
 
 .PHONY: compile
 compile:

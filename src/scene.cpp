@@ -83,20 +83,35 @@ namespace ray
     inline texturefilter_t parse_texture(scene_t& scene, rapidjson::Value& value, TEXTURETYPE* textype)
     {
         std::string type = value.HasMember("type") ? parse_string(value["type"]) : "color";
+        IMAGETYPE* image = 0;
         if (value.HasMember("filename"))
         {
             std::string filename = parse_string(value["filename"]);
-            printf("    filename: %s\n", filename.c_str());
             if (!filename.empty())
             {
                 std::string directory = scene._filename.substr(0, scene._filename.find_last_of('/')) + "/";
                 std::string filetype = filename.substr(filename.find_last_of('.') + 1);
                 printf("    directory: %s\n", directory.c_str());
                 printf("    ext: %s\n", filetype.c_str());
+                filename = directory + filename;
+                printf("    filename: %s\n", filename.c_str());
+                if (filetype == "png") { image = FreeImage_Load(FIF_PNG, filename.c_str(), PNG_DEFAULT); }
+                else if (filetype == "jpg" || filetype == "jpeg") { image = FreeImage_Load(FIF_JPEG, filename.c_str(), JPEG_DEFAULT); }
             }
         }
         
-        return texturefilter_t();
+        if (textype != 0)
+        {
+            if (type == "color") { *textype = TEXTURETYPE_COLOR; }
+    		else if (type == "normal") { *textype = TEXTURETYPE_NORMAL; }
+    		else if (type == "specular") { *textype = TEXTURETYPE_SPECULAR; }
+    		else if (type == "transparency") { *textype = TEXTURETYPE_TRANSPARENCY; }
+    		else if (type == "reflectivity") { *textype = TEXTURETYPE_REFLECTIVITY; }
+    		else if (type == "emissive") { *textype = TEXTURETYPE_EMISSIVE; }
+    		else if (type == "displacement") { *textype = TEXTURETYPE_DISPLACEMENT; }
+        }
+        
+        return texturefilter_t(image, SAMPLETYPE_NEAREST);
     }
     
     inline material_t* parse_material(scene_t& scene, rapidjson::Value& value)

@@ -32,9 +32,6 @@
         {
             "type": "sphere",
             "radius": 2.4,
-            "transform": {
-                
-            },
             "material": {
                 "type": "blinn",
                 "exp": 48,

@@ -12,6 +12,7 @@ namespace ray
         inline scene_t() {}
         inline ~scene_t() {}
         
+        std::string _filename;
         glm::ivec2 _photo;
         camera_t _camera;
         tracestack_t _stack;
